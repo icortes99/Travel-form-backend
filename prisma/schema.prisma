@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Person {
+  id        Int      @id @default(autoincrement())
+  uuid      String   @unique @default(uuid())
+  firstName String   @map("first_name")
+  lastName  String   @map("last_name")
+  birthdate DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User?
+
+  @@map("person")
+}
+
+model User {
+  id                Int                 @id @default(autoincrement())
+  uuid              String              @unique @default(uuid())
+  personId          Int                 @unique @map("person_id")
+  email             String              @unique
+  password          String
+  photo             String
+  phoneNumber       String              @map("phone_number")
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  application       Application[]
+  travelAgency      TravelAgency[]
+  applicationPerson ApplicationPerson[]
+  person            Person              @relation(fields: [personId], references: [id])
+
+  @@map("user")
+}
+
+model TravelAgency {
+  id          Int           @id @default(autoincrement())
+  uuid        String        @unique @default(uuid())
+  ownerId     Int           @map("owner_id")
+  name        String
+  website     String
+  logo        String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  application Application[]
+  owner       User          @relation(fields: [ownerId], references: [id])
+
+  @@map("travel_agency")
+}
+
+model Application {
+  id             Int          @id @default(autoincrement())
+  uuid           String       @unique @default(uuid())
+  userId         Int          @map("user_id")
+  travelAgencyId Int          @map("travel_agency_id")
+  distributionId Int          @map("distribution_id")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  user           User         @relation(fields: [userId], references: [id])
+  travelAgency   TravelAgency @relation(fields: [travelAgencyId], references: [id])
+
+  @@map("application")
+}
+
+model ApplicationPerson {
+  id           Int        @id @default(autoincrement())
+  uuid         String     @unique @default(uuid())
+  userId       Int        @map("user_id")
+  attractionId Int        @map("attraction_id")
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  user         User       @relation(fields: [userId], references: [id])
+  attraction   Attraction @relation(fields: [attractionId], references: [id])
+
+  @@map("application_person")
+}
+
+model Destination {
+  id         Int          @id @default(autoincrement())
+  uuid       String       @unique @default(uuid())
+  name       String
+  image1     String
+  image2     String
+  image3     String
+  video      String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  attraction Attraction[]
+
+  @@map("destination")
+}
+
+model Attraction {
+  id                Int                 @id @default(autoincrement())
+  uuid              String              @unique @default(uuid())
+  destinationId     Int                 @map("destination_id")
+  name              String
+  location          String
+  image1            String
+  image2            String
+  image3            String
+  travelDuration    String              @map("travel_duration")
+  travelDistance    String              @map("travel_distance")
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  hotel             Hotel[]
+  applicationPerson ApplicationPerson[]
+  destination       Destination         @relation(fields: [destinationId], references: [id])
+
+  @@map("attraction")
+}
+
+model Hotel {
+  id           Int        @id @default(autoincrement())
+  uuid         String     @unique @default(uuid())
+  attractionId Int        @map("attraction_id")
+  name         String
+  location     String
+  image        String
+  price        Float
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  attraction   Attraction @relation(fields: [attractionId], references: [id])
+
+  @@map("hotel")
+}

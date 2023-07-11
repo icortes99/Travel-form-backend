@@ -1,0 +1,60 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Person {
+  id: Float
+  firstName: String
+  lastName: String
+  birthdate: DateTime
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type User {
+  id: Float
+  uuid: String
+  personId: Int
+  email: String
+  photo: String
+  phoneNumber: String
+  person: Person
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type Query {
+  user(where: UserWhereUniqueInput!): User
+}
+
+input UserWhereUniqueInput {
+  uuid: String
+  email: String
+}
+
+type Mutation {
+  createUser(data: UserCreateInput!): User!
+}
+
+input UserCreateInput {
+  email: String!
+  password: String!
+  photo: String!
+  phoneNumber: String!
+  person: PersonCreateNestedOneWithoutUserInput!
+}
+
+input PersonCreateNestedOneWithoutUserInput {
+  create: PersonCreateWithoutUserInput!
+}
+
+input PersonCreateWithoutUserInput {
+  firstName: String!
+  lastName: String!
+  birthdate: DateTime!
+}
