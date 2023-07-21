@@ -23,3 +23,15 @@ export class PersonCreateNestedOneWithoutUserInput {
     @Field(() => PersonCreateWithoutUserInput)
     create: PersonCreateWithoutUserInput
 }
+
+@InputType()
+export class PersonCreateManyApplicationInputEnvelope {
+    @Field(() => [PersonCreateWithoutUserInput])
+    data: PersonCreateWithoutUserInput[]
+}
+
+@InputType()
+export class PersonCreateNestedManyWithoutApplicationInput {
+    @Field(() => PersonCreateManyApplicationInputEnvelope)
+    createMany: PersonCreateManyApplicationInputEnvelope
+}

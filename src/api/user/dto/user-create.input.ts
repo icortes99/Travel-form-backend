@@ -4,9 +4,10 @@ import { IsEmail, MaxLength, MinLength } from 'class-validator';
 
 import { PersonCreateNestedOneWithoutUserInput } from 'src/api/person/dto';
 
+import { UserWhereUniqueInput } from './user-where-unique.input';
+
 @InputType()
 export class UserCreateInput {
-
   @IsEmail()
   @Field(() => String)
   email: string;
@@ -24,4 +25,10 @@ export class UserCreateInput {
 
   @Field(() => PersonCreateNestedOneWithoutUserInput)
   person: PersonCreateNestedOneWithoutUserInput
+}
+
+@InputType()
+export class UserCreateNestedOneWithoutTravelAgencyInput {
+  @Field(() => UserWhereUniqueInput)
+  connect: UserWhereUniqueInput
 }

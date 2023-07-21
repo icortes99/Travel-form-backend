@@ -1,13 +1,11 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql'
 
-import { Application } from 'src/api/application/model';
+import { Application } from 'src/api/application/model'
 
-import { Person } from 'src/api/person/model';
-
-import { TravelAgency } from 'src/api/travel-agency/model';
+import { User } from 'src/api/user/model'
 
 @ObjectType()
-export class User {
+export class TravelAgency {
   @Field(() => Number, { nullable: true })
   id?: number
 
@@ -15,25 +13,22 @@ export class User {
   uuid?: string
 
   @Field(() => Int, { nullable: true })
-  personId?: number
+  ownerId?: number
 
   @Field(() => String, { nullable: true })
-  email?: string
+  name?: string
 
   @Field(() => String, { nullable: true })
-  photo?: string
+  website?: string
 
   @Field(() => String, { nullable: true })
-  phoneNumber?: string
+  logo?: string
 
-  @Field(() => Person, { nullable: true })
-  person?: Person
+  @Field(() => User, { nullable: true })
+  owner?: User
 
   @Field(() => [Application], { nullable: true })
   applications?: Application[]
-
-  @Field(() => [TravelAgency], { nullable: true })
-  travelAgencies?: TravelAgency[]
 
   @Field(() => Date, { nullable: true })
   createdAt?: Date
