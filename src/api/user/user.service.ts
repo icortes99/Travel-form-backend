@@ -1,12 +1,12 @@
-import { v4 as uuidv4 } from 'uuid';
+import { BadRequestException, Injectable } from '@nestjs/common'
 
-import { Injectable } from '@nestjs/common';
+import { User, UserSelect } from './model'
 
-import { User, UserSelect } from './model';
+import { UserArgs, UserCreateInput } from './dto'
 
-import { UserArgs, UserCreateInput } from './dto';
+import { PrismaService } from 'src/shared/datasource/prisma/prisma.service'
 
-import { PrismaService } from 'src/shared/datasource/prisma/prisma.service';
+import validateAge from 'src/shared/util/refuse-by/age.input'
 
 @Injectable()
 export class UserService {
@@ -19,13 +19,13 @@ export class UserService {
     return this.prismaService.user.findUnique({
       where,
       select,
-    });
+    })
   }
 
   public async findUserPassword({ where }: UserArgs) {
     const user = await this.prismaService.user.findUnique({
       where,
-    });
+    })
     return user ? user.password : null;
   }
 
@@ -33,9 +33,14 @@ export class UserService {
     data: UserCreateInput,
     { select }: UserSelect,
   ): Promise<User> {
+    if (data.person) {
+      if (!validateAge(data.person.create.birthdate, 0)) {
+        throw new BadRequestException('Date not supported')
+      }
+    }
     return this.prismaService.user.create({
       data,
       select,
-    });
+    })
   }
 }

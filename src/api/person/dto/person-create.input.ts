@@ -1,6 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql'
 
-import { MaxLength, MinLength } from 'class-validator'
+import { IsDateString, MaxLength, MinLength } from 'class-validator'
+
 
 @InputType()
 export class PersonCreateWithoutUserInput {
@@ -14,6 +15,7 @@ export class PersonCreateWithoutUserInput {
     @Field(() => String)
     lastName: string
 
+    @IsDateString()
     @Field(() => Date)
     birthdate: Date
 }
