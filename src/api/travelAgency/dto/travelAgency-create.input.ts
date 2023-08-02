@@ -4,7 +4,7 @@ import { MaxLength, MinLength } from 'class-validator'
 
 import { UserCreateNestedOneWithoutTravelAgencyInput } from 'src/api/user/dto'
 
-import { TravelAgencyWhereUniqueInput } from './travel-agency-where-unique.input'
+import { TravelAgencyWhereUniqueInput } from './travelAgency-where-unique.input'
 
 @InputType()
 export class TravelAgencyCreateInput {
@@ -31,6 +31,12 @@ export class TravelAgencyCreateNestedOneWithoutDestinationsInput {
 
 @InputType()
 export class TravelAgencyCreateNestedOneWithoutApplicationsInput {
+  @Field(() => TravelAgencyWhereUniqueInput)
+  connect: TravelAgencyWhereUniqueInput
+}
+
+@InputType()
+export class HotelDestinationCreateNestedManyWithoutTravelAgencyInput {
   @Field(() => TravelAgencyWhereUniqueInput)
   connect: TravelAgencyWhereUniqueInput
 }
