@@ -6,11 +6,5 @@ export class PersonWhereUniqueInput {
     id?: number
 
     @Field(() => String, { nullable: true })
-    name?: string
-
-    @Field(() => String, { nullable: true })
-    last_name?: string
-
-    @Field(() => Date, { nullable: true })
-    birth?: Date
+    uuid?: string
 }

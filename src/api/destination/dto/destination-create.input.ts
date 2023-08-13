@@ -2,8 +2,6 @@ import { Field, InputType } from '@nestjs/graphql'
 
 import { MaxLength, MinLength } from 'class-validator'
 
-import { TravelAgencyCreateNestedOneWithoutDestinationsInput } from 'src/api/travel-agency/dto'
-
 import { DestinationWhereUniqueInput } from './destination-where-unique.input'
 
 @InputType()
@@ -32,6 +30,12 @@ export class DestinationCreateNestedOneWithoutAttractionsInput {
 
 @InputType()
 export class DestinationCreateNestedOneWithoutApplicationsInput {
+  @Field(() => DestinationWhereUniqueInput)
+  connect: DestinationWhereUniqueInput
+}
+
+@InputType()
+export class HotelDestinationCreateNestedManyWithoutDestinationInput {
   @Field(() => DestinationWhereUniqueInput)
   connect: DestinationWhereUniqueInput
 }

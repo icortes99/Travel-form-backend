@@ -20,18 +20,6 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type Person {
-  id: Int
-  uuid: String
-  applicationId: Int
-  firstName: String
-  lastName: String
-  birthdate: DateTime
-  application: Application
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
 type Attraction {
   id: Float
   uuid: String
@@ -59,18 +47,104 @@ type Destination {
   updatedAt: DateTime
 }
 
+type Person {
+  id: Int
+  uuid: String
+  firstName: String
+  lastName: String
+  birthdate: DateTime
+  createdAt: DateTime
+  updatedAt: DateTime
+  passengers: [Passengers!]
+}
+
+type Hotel {
+  id: Int
+  uuid: String
+  name: String
+  description: String
+  images: [String!]
+  suites: [Suite!]
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type Suite {
+  id: Float
+  uuid: String
+  hotelId: Float
+  name: String
+  description: String
+  images: [String!]
+  feePerAdult: Float
+  feePerKid: Float
+  basedPrice: Float
+  hotel: Hotel
+  passengers: [Passengers!]
+}
+
+type Passengers {
+  suiteId: Float!
+  personId: Float!
+  applicationId: Float!
+  suite: Suite!
+  person: Person!
+  application: Application!
+}
+
 type Application {
   id: Int
   uuid: String
   userId: Int
   travelAgencyId: Int
   destinationId: Int
+  leadSource: LeadSource
+  userCurrentLocation: String
+  hasEntryPermission: Boolean
+  startDate: DateTime
+  endDate: DateTime
+  tripObjective: TripObjective
+  contactPreference: ContactPreference
   user: User
   travelAgency: TravelAgency
   destination: Destination
-  companions: [Person!]
+  passengers: [Passengers!]
   createdAt: DateTime
   updatedAt: DateTime
+}
+
+enum LeadSource {
+  INSTAGRAM
+  FACEBOOK
+  REFERRAL
+  WEBSITE
+  OTHER
+}
+
+enum TripObjective {
+  VACATION
+  FAMILY
+  COUPLE
+  SOLO
+  FRIENDS
+  ADVENTURE
+  RELAXATION
+  CULTURAL_EXPLORATION
+  FOOD_AND_CULINARY
+  BEACH_AND_SUN
+  WILDLIFE_AND_NATURE
+  SPORTS_AND_RECREATION
+  HONEYMOON
+  OTHER
+}
+
+enum ContactPreference {
+  CALL
+  VIDEO_CALL
+  EMAIL
+  SMS
+  WHATSAPP
+  OTHER
 }
 
 type User {
@@ -87,17 +161,6 @@ type User {
   updatedAt: DateTime
 }
 
-type Hotel {
-  id: Int
-  uuid: String
-  name: String
-  description: String
-  images: [String!]
-  price: Float
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
 type Query {
   user(where: UserWhereUniqueInput!): User
   travelAgency(where: TravelAgencyWhereUniqueInput!): TravelAgency
@@ -105,6 +168,7 @@ type Query {
   destination(where: DestinationWhereUniqueInput!): Destination
   attraction(where: AttractionWhereUniqueInput!): Attraction
   application(where: ApplicationWhereUniqueInput!): Application
+  suite(where: SuiteWhereUniqueInput!): Suite
 }
 
 input UserWhereUniqueInput {
@@ -132,6 +196,11 @@ input ApplicationWhereUniqueInput {
   id: Int
 }
 
+input SuiteWhereUniqueInput {
+  uuid: String
+  id: Float
+}
+
 type Mutation {
   createUser(data: UserCreateInput!): User!
   createTravelAgency(data: TravelAgencyCreateInput!): TravelAgency!
@@ -139,6 +208,7 @@ type Mutation {
   createDestination(data: DestinationCreateInput!): Destination!
   createAttraction(data: AttractionCreateInput!): Attraction!
   createApplication(data: ApplicationCreateInput!): Application!
+  createSuite(data: SuiteCreateInput!): Suite!
 }
 
 input UserCreateInput {
@@ -174,7 +244,6 @@ input HotelCreateInput {
   name: String!
   description: String!
   images: [String!]!
-  price: Float!
 }
 
 input DestinationCreateInput {
@@ -198,24 +267,69 @@ input DestinationCreateNestedOneWithoutAttractionsInput {
 }
 
 input ApplicationCreateInput {
-  user: UserCreateNestedOneWithoutTravelAgencyInput
+  user: UserCreateNestedOneWithoutApplicationsInput
   travelAgency: TravelAgencyCreateNestedOneWithoutApplicationsInput!
-  companions: PersonCreateNestedManyWithoutApplicationInput
   destination: DestinationCreateNestedOneWithoutApplicationsInput!
+  passengers: PassengersCreateNestedManyWithoutApplicationInput
+  leadSource: LeadSource!
+  userCurrentLocation: String!
+  hasEntryPermission: Boolean!
+  startDate: DateTime!
+  endDate: DateTime!
+  tripObjective: TripObjective!
+  contactPreference: ContactPreference!
+}
+
+input UserCreateNestedOneWithoutApplicationsInput {
+  connect: UserWhereUniqueInput!
 }
 
 input TravelAgencyCreateNestedOneWithoutApplicationsInput {
   connect: TravelAgencyWhereUniqueInput!
 }
 
-input PersonCreateNestedManyWithoutApplicationInput {
-  createMany: PersonCreateManyApplicationInputEnvelope!
-}
-
-input PersonCreateManyApplicationInputEnvelope {
-  data: [PersonCreateWithoutUserInput!]!
-}
-
 input DestinationCreateNestedOneWithoutApplicationsInput {
   connect: DestinationWhereUniqueInput!
+}
+
+input PassengersCreateNestedManyWithoutApplicationInput {
+  create: [PassengersCreateWithoutApplicationInput!]!
+}
+
+input PassengersCreateWithoutApplicationInput {
+  suite: SuiteCreateNestedOneWithoutPassengersInput!
+  person: PersonCreateNestedOneWithoutPassengersInput!
+}
+
+input SuiteCreateNestedOneWithoutPassengersInput {
+  connect: SuiteWhereUniqueInput!
+}
+
+input PersonCreateNestedOneWithoutPassengersInput {
+  create: PersonCreateWithoutPassengersInput!
+}
+
+input PersonCreateWithoutPassengersInput {
+  firstName: String!
+  lastName: String!
+  birthdate: DateTime!
+}
+
+input SuiteCreateInput {
+  name: String!
+  description: String!
+  images: [String!]!
+  feePerAdult: Float!
+  feePerKid: Float!
+  basedPrice: Float!
+  hotel: HotelCreateNestedOneWithoutSuitesInput!
+}
+
+input HotelCreateNestedOneWithoutSuitesInput {
+  connect: HotelWhereUniqueInput!
+}
+
+input HotelWhereUniqueInput {
+  uuid: String
+  id: Int
 }

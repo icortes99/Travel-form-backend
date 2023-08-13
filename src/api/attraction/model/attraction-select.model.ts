@@ -8,7 +8,6 @@ interface AttractionPrismaSelect {
   travelDuration?: boolean
   travelDistance?: boolean
   destination?: boolean
-  hotels?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }

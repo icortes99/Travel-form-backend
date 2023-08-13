@@ -7,6 +7,7 @@ import { HotelModule } from './api/hotel/hotel.module';
 import { DestinationModule } from './api/destination/destination.module';
 import { AttractionModule } from './api/attraction/attraction.module';
 import { ApplicationModule } from './api/application/application.module';
+import { SuiteModule } from './api/suite/suite.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { ApplicationModule } from './api/application/application.module';
     HotelModule,
     DestinationModule,
     AttractionModule,
-    ApplicationModule
+    ApplicationModule,
+    SuiteModule
   ],
   controllers: [],
   providers: [],

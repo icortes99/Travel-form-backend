@@ -4,6 +4,8 @@ import { MaxLength, MinLength } from 'class-validator'
 
 import { DestinationCreateNestedOneWithoutAttractionsInput } from 'src/api/destination/dto'
 
+import { AttractionWhereUniqueInput } from './attraction-where-unique.input'
+
 @InputType()
 export class AttractionCreateInput {
   @Field(() => String)
@@ -25,4 +27,10 @@ export class AttractionCreateInput {
 
   @Field(() => DestinationCreateNestedOneWithoutAttractionsInput)
   destination: DestinationCreateNestedOneWithoutAttractionsInput //use the connect class
+}
+
+@InputType()
+export class ApplicationAttractionCreateNestedManyWithoutAttractionInput {
+  @Field(() => AttractionWhereUniqueInput)
+  connect: AttractionWhereUniqueInput
 }

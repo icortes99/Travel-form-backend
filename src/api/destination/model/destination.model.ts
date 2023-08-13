@@ -1,8 +1,8 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql'
+import { Field, ObjectType } from '@nestjs/graphql'
+
 import { Application } from 'src/api/application/model'
 
 import { Attraction } from 'src/api/attraction/model'
-import { TravelAgency } from 'src/api/travel-agency/model'
 
 @ObjectType()
 export class Destination {

@@ -1,6 +1,8 @@
-import { Field, Float, InputType } from '@nestjs/graphql'
+import { Field, InputType } from '@nestjs/graphql'
 
 import { MaxLength, MinLength } from 'class-validator'
+
+import { HotelWhereUniqueInput } from './hotel-where-unique.input'
 
 @InputType()
 export class HotelCreateInput {
@@ -15,7 +17,22 @@ export class HotelCreateInput {
 
   @Field(() => [String])
   images: string[]
+}
 
-  @Field(() => Float)
-  price: number
+@InputType()
+export class HotelDestinationCreateNestedManyWithoutHotelInput {
+  @Field(() => HotelWhereUniqueInput)
+  connect: HotelWhereUniqueInput
+}
+
+@InputType()
+export class SuiteUncheckedCreateNestedManyWithoutHotelInput {
+  @Field(() => HotelWhereUniqueInput)
+  connect: HotelWhereUniqueInput
+}
+
+@InputType()
+export class HotelCreateNestedOneWithoutSuitesInput {
+  @Field(() => HotelWhereUniqueInput)
+  connect: HotelWhereUniqueInput
 }

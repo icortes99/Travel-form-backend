@@ -1,13 +1,10 @@
 interface HotelPrismaSelect {
   id?: boolean
   uuid?: boolean
-  attractionId?: boolean
   name?: boolean
   description?: boolean
-  location?: boolean
-  image?: boolean
-  price?: boolean
-  attraction?: boolean
+  images?: boolean
+  suites?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }

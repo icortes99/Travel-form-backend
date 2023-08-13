@@ -1,12 +1,13 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql'
+import { Field, Int, ObjectType, registerEnumType } from '@nestjs/graphql'
 
 import { User } from 'src/api/user/model'
 
-import { TravelAgency } from 'src/api/travel-agency/model'
-
-import { Person } from 'src/api/person/model'
+import { TravelAgency } from 'src/api/travelAgency/model'
 
 import { Destination } from 'src/api/destination/model'
+
+import { ContactPreference, LeadSource, TripObjective } from '@prisma/client'
+import { Passengers } from 'src/api/passengers/model/passengers.model'
 
 @ObjectType()
 export class Application {
@@ -25,6 +26,27 @@ export class Application {
   @Field(() => Int, { nullable: true })
   destinationId?: number
 
+  @Field(() => LeadSource, { nullable: true })
+  leadSource?: LeadSource
+
+  @Field(() => String, { nullable: true })
+  userCurrentLocation?: string
+
+  @Field(() => Boolean, { nullable: true })
+  hasEntryPermission?: boolean
+
+  @Field(() => Date, { nullable: true })
+  startDate?: Date
+
+  @Field(() => Date, { nullable: true })
+  endDate?: Date
+
+  @Field(() => TripObjective, { nullable: true })
+  tripObjective?: TripObjective
+
+  @Field(() => ContactPreference, { nullable: true })
+  contactPreference?: ContactPreference
+
   @Field(() => User, { nullable: true })
   user?: User
 
@@ -34,8 +56,8 @@ export class Application {
   @Field(() => Destination, { nullable: true })
   destination?: Destination
 
-  @Field(() => [Person], { nullable: true })
-  companions?: Person[]
+  @Field(() => [Passengers], { nullable: true })
+  passengers?: Passengers[]
 
   @Field(() => Date, { nullable: true })
   createdAt?: Date
@@ -43,3 +65,15 @@ export class Application {
   @Field(() => Date, { nullable: true })
   updatedAt?: Date
 }
+
+registerEnumType(LeadSource, {
+  name: 'LeadSource',
+})
+
+registerEnumType(ContactPreference, {
+  name: 'ContactPreference',
+})
+
+registerEnumType(TripObjective, {
+  name: 'TripObjective',
+})

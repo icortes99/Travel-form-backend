@@ -4,7 +4,7 @@ import { Application } from 'src/api/application/model';
 
 import { Person } from 'src/api/person/model';
 
-import { TravelAgency } from 'src/api/travel-agency/model';
+import { TravelAgency } from 'src/api/travelAgency/model';
 
 @ObjectType()
 export class User {

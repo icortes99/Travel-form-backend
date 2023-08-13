@@ -1,10 +1,12 @@
 interface PersonPrismaSelect {
     id?: boolean
-    name?: boolean
-    last_name?: boolean
-    birth?: boolean
+    uuid?: boolean
+    firstName?: boolean
+    lastName?: boolean
+    birthdate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    passengers?: boolean
 }
 
 export interface PersonSelect {

@@ -1,5 +1,6 @@
-import { Field, Int, ObjectType, registerEnumType } from '@nestjs/graphql'
-import { Application } from 'src/api/application/model'
+import { Field, Int, ObjectType } from '@nestjs/graphql'
+
+import { Passengers } from 'src/api/passengers/model/passengers.model'
 
 @ObjectType()
 export class Person {
@@ -8,9 +9,6 @@ export class Person {
 
   @Field(() => String, { nullable: true })
   uuid?: string
-
-  @Field(() => Int, { nullable: true })
-  applicationId?: number
 
   @Field(() => String, { nullable: true })
   firstName?: string
@@ -21,12 +19,12 @@ export class Person {
   @Field(() => Date, { nullable: true })
   birthdate?: Date
 
-  @Field(() => Application, { nullable: true })
-  application?: Application
-
   @Field(() => Date, { nullable: true })
   createdAt?: Date
 
   @Field(() => Date, { nullable: true })
   updatedAt?: Date
+
+  @Field(() => [Passengers], { nullable: true })
+  passengers?: Passengers[]
 }

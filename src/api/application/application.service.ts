@@ -39,10 +39,10 @@ export class ApplicationService {
       }
     }
 
-    if (data.companions) {
+    /*if (data.companions) {
       const limitDate = new Date()
 
-      /*const wrongBirth = data.companions.createMany.data.filter(companion => {
+      const wrongBirth = data.companions.createMany.data.filter(companion => {
         if (companion.birthdate.getFullYear() > limitDate.getFullYear()) {
           return true
         }
@@ -53,13 +53,13 @@ export class ApplicationService {
           return true
         }
         return false
-      })*/
-      const wrongBirth = data.companions.createMany.data.filter(companion => !validateAge(companion.birthdate, 0))
+      })
+      //const wrongBirth = data.companions.createMany.data.filter(companion => !validateAge(companion.birthdate, 0))
 
-      if (wrongBirth.length > 0) {
+      /*if (wrongBirth.length > 0) {
         throw new BadRequestException('Date not supported')
       }
-    }
+    }*/
 
     return this.prismaService.application.create({
       data,

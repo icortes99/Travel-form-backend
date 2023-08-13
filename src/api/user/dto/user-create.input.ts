@@ -32,3 +32,9 @@ export class UserCreateNestedOneWithoutTravelAgencyInput {
   @Field(() => UserWhereUniqueInput)
   connect: UserWhereUniqueInput
 }
+
+@InputType()
+export class UserCreateNestedOneWithoutApplicationsInput {
+  @Field(() => UserWhereUniqueInput)
+  connect: UserWhereUniqueInput
+}
