@@ -1,5 +1,7 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql'
 
+import { HotelDestination } from 'src/api/hotelDestination/model'
+
 import { Suite } from 'src/api/suite/model'
 
 @ObjectType()
@@ -27,4 +29,7 @@ export class Hotel {
 
   @Field(() => Date, { nullable: true })
   updatedAt?: Date
+
+  @Field(() => [HotelDestination], { nullable: true })
+  hotelDestinations?: HotelDestination[]
 }

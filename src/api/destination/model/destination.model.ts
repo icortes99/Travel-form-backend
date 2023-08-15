@@ -4,6 +4,8 @@ import { Application } from 'src/api/application/model'
 
 import { Attraction } from 'src/api/attraction/model'
 
+import { HotelDestination } from 'src/api/hotelDestination/model'
+
 @ObjectType()
 export class Destination {
   @Field(() => Number, { nullable: true })
@@ -35,4 +37,7 @@ export class Destination {
 
   @Field(() => Date, { nullable: true })
   updatedAt?: Date
+
+  @Field(() => [HotelDestination], { nullable: true })
+  hotelDestinations?: HotelDestination[]
 }
