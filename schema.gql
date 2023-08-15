@@ -2,6 +2,13 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type ApplicationAttraction {
+  applicationId: Float!
+  attractionId: Float!
+  application: Application!
+  attraction: Attraction!
+}
+
 type Attraction {
   id: Float
   uuid: String
@@ -12,6 +19,7 @@ type Attraction {
   travelDuration: Float
   travelDistance: Float
   destination: Destination
+  applicationAttractions: [ApplicationAttraction!]
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -121,6 +129,7 @@ type Application {
   travelAgency: TravelAgency
   destination: Destination
   passengers: [Passengers!]
+  applicationAttractions: [ApplicationAttraction!]
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -181,7 +190,7 @@ type Query {
   attraction(where: AttractionWhereUniqueInput!): Attraction
   application(where: ApplicationWhereUniqueInput!): Application
   suite(where: SuiteWhereUniqueInput!): Suite
-  hotelDestination(where: HotelDestinationHotelIdDestinationIdTravelAgencyIdCompoundUniqueInput!): HotelDestination
+  hotelDestination(where: HotelDesinationWhereUniqueInput!): HotelDestination
 }
 
 input UserWhereUniqueInput {
@@ -214,14 +223,10 @@ input SuiteWhereUniqueInput {
   id: Float
 }
 
-input HotelDestinationHotelIdDestinationIdTravelAgencyIdCompoundUniqueInput {
-  hotelId_destinationId_travelAgencyId: HotelDesinationWhereUniqueInput
-}
-
 input HotelDesinationWhereUniqueInput {
-  hotelId: Int
-  destinationId: Int
-  travelAgencyId: Int
+  hotelId: Int!
+  destinationId: Int!
+  travelAgencyId: Int!
 }
 
 type Mutation {
@@ -302,6 +307,7 @@ input ApplicationCreateInput {
   endDate: DateTime!
   tripObjective: TripObjective!
   contactPreference: ContactPreference!
+  applicationAttractions: ApplicationAttractionCreateNestedManyWithoutApplicationInput!
 }
 
 input UserCreateNestedOneWithoutApplicationsInput {
@@ -337,6 +343,18 @@ input PersonCreateWithoutPassengersInput {
   firstName: String!
   lastName: String!
   birthdate: DateTime!
+}
+
+input ApplicationAttractionCreateNestedManyWithoutApplicationInput {
+  create: [ApplicationAttractionCreateWithoutApplicationInput!]!
+}
+
+input ApplicationAttractionCreateWithoutApplicationInput {
+  attraction: AttractionCreateNestedOneWithoutApplicationAttractionsInput!
+}
+
+input AttractionCreateNestedOneWithoutApplicationAttractionsInput {
+  connect: AttractionWhereUniqueInput!
 }
 
 input SuiteCreateInput {

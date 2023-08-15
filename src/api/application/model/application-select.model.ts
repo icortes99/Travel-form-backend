@@ -1,4 +1,12 @@
+import { ApplicationAttractionSelect } from "src/api/applicationAttraction/model"
+
+import { DestinationSelect } from "src/api/destination/model"
+
 import { PassengersSelect } from "src/api/passengers/model"
+
+import { TravelAgencySelect } from "src/api/travelAgency/model"
+
+import { UserSelect } from "src/api/user/model"
 
 interface ApplicationPrismaSelect {
   id?: boolean
@@ -15,10 +23,11 @@ interface ApplicationPrismaSelect {
   contactPreference?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  user?: boolean
-  travelAgency?: boolean
-  destination?: boolean
+  user?: UserSelect
+  travelAgency?: TravelAgencySelect
+  destination?: DestinationSelect
   passengers?: PassengersSelect
+  applicationAttractions?: ApplicationAttractionSelect
 }
 
 export interface ApplicationSelect {

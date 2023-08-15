@@ -7,7 +7,10 @@ import { TravelAgency } from 'src/api/travelAgency/model'
 import { Destination } from 'src/api/destination/model'
 
 import { ContactPreference, LeadSource, TripObjective } from '@prisma/client'
+
 import { Passengers } from 'src/api/passengers/model/passengers.model'
+
+import { ApplicationAttraction } from 'src/api/applicationAttraction/model'
 
 @ObjectType()
 export class Application {
@@ -58,6 +61,9 @@ export class Application {
 
   @Field(() => [Passengers], { nullable: true })
   passengers?: Passengers[]
+
+  @Field(() => [ApplicationAttraction], { nullable: true })
+  applicationAttractions?: ApplicationAttraction[]
 
   @Field(() => Date, { nullable: true })
   createdAt?: Date

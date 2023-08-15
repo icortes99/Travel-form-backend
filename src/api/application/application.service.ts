@@ -39,27 +39,46 @@ export class ApplicationService {
       }
     }
 
-    /*if (data.companions) {
-      const limitDate = new Date()
+    const attractionIDs: (string | number)[] = data.applicationAttractions.create.map(({ attraction }) => (
+      attraction.connect.id ?? attraction.connect.uuid
+    ))
 
-      const wrongBirth = data.companions.createMany.data.filter(companion => {
-        if (companion.birthdate.getFullYear() > limitDate.getFullYear()) {
-          return true
+    const selectedAttractions = await this.prismaService.attraction.findMany({
+      where: {
+        OR: [
+          {
+            id: {
+              in: attractionIDs.filter((id) => typeof id === 'number') as number[]
+            }
+          },
+          {
+            uuid: {
+              in: attractionIDs.filter((id) => typeof id === 'string') as string[]
+            }
+          }
+        ]
+      },
+      select: {
+        destination: {
+          select: {
+            id: true,
+            uuid: true
+          }
         }
-        if ((companion.birthdate.getFullYear() === limitDate.getFullYear()) && (companion.birthdate.getMonth() > limitDate.getMonth())) {
-          return true
-        }
-        if ((companion.birthdate.getFullYear() === limitDate.getFullYear()) && (companion.birthdate.getMonth() === limitDate.getMonth()) && (companion.birthdate.getDate() > limitDate.getDate())) {
-          return true
-        }
-        return false
-      })
-      //const wrongBirth = data.companions.createMany.data.filter(companion => !validateAge(companion.birthdate, 0))
-
-      /*if (wrongBirth.length > 0) {
-        throw new BadRequestException('Date not supported')
       }
-    }*/
+    })
+
+    if (selectedAttractions.length !== data.applicationAttractions.create.length) {
+      throw new ConflictException('There is an attraction id that does not exist or it is a duplicate of another')
+    }
+
+    const wrongDestinationAttractions = selectedAttractions.filter(({ destination: { id, uuid } }) => (
+      id !== data.destination.connect.id ?? uuid !== data.destination.connect.uuid
+    ))
+
+    if (wrongDestinationAttractions.length) {
+      throw new ConflictException('There are attractions that are not related to the destination')
+    }
 
     return this.prismaService.application.create({
       data,

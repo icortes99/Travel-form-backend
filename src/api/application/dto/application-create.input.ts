@@ -1,5 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql'
 
+import { ContactPreference, LeadSource, TripObjective } from '@prisma/client'
+
 import { UserCreateNestedOneWithoutApplicationsInput } from 'src/api/user/dto'
 
 import { TravelAgencyCreateNestedOneWithoutApplicationsInput } from 'src/api/travelAgency/dto'
@@ -8,7 +10,7 @@ import { DestinationCreateNestedOneWithoutApplicationsInput } from 'src/api/dest
 
 import { PassengersCreateNestedManyWithoutApplicationInput } from 'src/api/passengers/dto'
 
-import { ContactPreference, LeadSource, TripObjective } from '@prisma/client'
+import { ApplicationAttractionCreateNestedManyWithoutApplicationInput } from 'src/api/applicationAttraction/dto'
 
 @InputType()
 export class ApplicationCreateInput {
@@ -44,4 +46,7 @@ export class ApplicationCreateInput {
 
   @Field(() => ContactPreference)
   contactPreference: ContactPreference
+
+  @Field(() => ApplicationAttractionCreateNestedManyWithoutApplicationInput)
+  applicationAttractions: ApplicationAttractionCreateNestedManyWithoutApplicationInput
 }

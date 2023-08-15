@@ -30,7 +30,7 @@ export class AttractionCreateInput {
 }
 
 @InputType()
-export class ApplicationAttractionCreateNestedManyWithoutAttractionInput {
+export class AttractionCreateNestedOneWithoutApplicationAttractionsInput {
   @Field(() => AttractionWhereUniqueInput)
   connect: AttractionWhereUniqueInput
 }

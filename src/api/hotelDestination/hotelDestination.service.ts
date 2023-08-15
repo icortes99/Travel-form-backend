@@ -15,7 +15,9 @@ export class HotelDestinationService {
     { select }: HotelDestinationSelect
   ): Promise<HotelDestination> {
     return this.prismaService.hotelDestination.findUnique({
-      where,
+      where: {
+        hotelId_destinationId_travelAgencyId: where
+      },
       select
     })
   }
