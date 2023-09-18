@@ -4,7 +4,7 @@ import { TravelAgency, TravelAgencySelect } from './model'
 
 import { TravelAgencyArgs, TravelAgencyCreateInput } from './dto'
 
-import { TravelAgencyService } from './travelAgency.service'
+import { TravelAgencyService } from './travel-agency.service'
 
 import { GraphQLFields, IGraphQLFields } from 'src/shared/decorators'
 

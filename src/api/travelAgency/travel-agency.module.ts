@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common'
 
-import { TravelAgencyResolver } from './travelAgency.resolver'
+import { TravelAgencyResolver } from './travel-agency.resolver'
 
-import { TravelAgencyService } from './travelAgency.service'
+import { TravelAgencyService } from './travel-agency.service'
 
 @Module({
   imports: [],

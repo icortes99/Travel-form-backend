@@ -1,2 +1,2 @@
-export * from './travelAgency-select.model'
-export * from './travelAgency.model'
+export * from './travel-agency-select.model'
+export * from './travel-agency.model'

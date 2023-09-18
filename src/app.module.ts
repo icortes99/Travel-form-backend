@@ -6,7 +6,7 @@ import { UserModule } from './api/user/user.module'
 
 import { PrismaModule } from './shared/datasource/prisma/prisma.module'
 
-import { TravelAgencyModule } from './api/travelAgency/travelAgency.module'
+import { TravelAgencyModule } from './api/travelAgency/travel-agency.module'
 
 import { HotelModule } from './api/hotel/hotel.module'
 
