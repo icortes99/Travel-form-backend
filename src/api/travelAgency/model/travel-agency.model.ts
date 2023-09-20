@@ -14,6 +14,9 @@ export class TravelAgency {
   @Field(() => String, { nullable: true })
   uuid?: string
 
+  @Field(() => String, { nullable: true })
+  slug?: string
+
   @Field(() => Int, { nullable: true })
   ownerId?: number
 

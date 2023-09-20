@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql'
 
-import { MaxLength, MinLength } from 'class-validator'
+import { Matches, MaxLength, MinLength } from 'class-validator'
 
 import { UserCreateNestedOneWithoutTravelAgencyInput } from 'src/api/user/dto'
 
@@ -8,6 +8,12 @@ import { TravelAgencyWhereUniqueInput } from './travel-agency-where-unique.input
 
 @InputType()
 export class TravelAgencyCreateInput {
+  @MinLength(3)
+  @MaxLength(30)
+  @Matches(/^[^\s]+$/, { message: 'No white spaces allowed' })
+  @Field(() => String)
+  slug: string
+
   @MinLength(3)
   @MaxLength(30)
   @Field(() => String)

@@ -7,6 +7,7 @@ import { UserSelect } from 'src/api/user/model'
 interface TravelAgencyPrismaSelect {
   id?: boolean
   uuid?: boolean
+  slug?: boolean
   ownerId?: boolean
   name?: boolean
   website?: boolean

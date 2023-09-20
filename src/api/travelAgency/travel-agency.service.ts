@@ -12,11 +12,19 @@ export class TravelAgencyService {
 
   public async findOne(
     { where }: TravelAgencyArgs,
-    { select }: TravelAgencySelect,
+    { select: { applications, ...select } }: TravelAgencySelect,
   ): Promise<TravelAgency> {
     return this.prismaService.travelAgency.findUnique({
       where,
-      select,
+      select: {
+        ...select,
+        applications: applications ? {
+          ...applications,
+          where: {
+            userId: null
+          }
+        } : undefined
+      }
     })
   }
 
