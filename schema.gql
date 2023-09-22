@@ -101,6 +101,7 @@ type HotelDestination {
 type TravelAgency {
   id: Float
   uuid: String
+  slug: String
   ownerId: Int
   name: String
   website: String
@@ -191,6 +192,7 @@ type Query {
   application(where: ApplicationWhereUniqueInput!): Application
   suite(where: SuiteWhereUniqueInput!): Suite
   hotelDestination(where: HotelDesinationWhereUniqueInput!): HotelDestination
+  hotelsInDestinationAgency(where: HotelsInDesinationAgencyWhereUniqueInput!): [HotelDestination!]
 }
 
 input UserWhereUniqueInput {
@@ -201,6 +203,7 @@ input UserWhereUniqueInput {
 input TravelAgencyWhereUniqueInput {
   uuid: String
   id: Int
+  slug: String
 }
 
 input AttractionWhereUniqueInput {
@@ -227,6 +230,11 @@ input HotelDesinationWhereUniqueInput {
   hotelId: Int!
   destinationId: Int!
   travelAgencyId: Int!
+}
+
+input HotelsInDesinationAgencyWhereUniqueInput {
+  destinationId: Int!
+  travelAgency: TravelAgencyWhereUniqueInput!
 }
 
 type Mutation {
@@ -259,6 +267,7 @@ input PersonCreateWithoutUserInput {
 }
 
 input TravelAgencyCreateInput {
+  slug: String!
   name: String!
   website: String!
   logo: String!

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 
 import { PrismaService } from 'src/shared/datasource/prisma/prisma.service'
 
-import { HotelDestinationArgs, HotelDestinationCreateInput } from './dto'
+import { HotelDestinationArgs, HotelDestinationCreateInput, HotelsInDestinationAgencyArgs } from './dto'
 
 import { HotelDestination, HotelDestinationSelect } from './model'
 
@@ -17,6 +17,19 @@ export class HotelDestinationService {
     return this.prismaService.hotelDestination.findUnique({
       where: {
         hotelId_destinationId_travelAgencyId: where
+      },
+      select
+    })
+  }
+
+  public async findHotels(
+    { where }: HotelsInDestinationAgencyArgs,
+    { select }: HotelDestinationSelect
+  ): Promise<HotelDestination[]> {
+    return this.prismaService.hotelDestination.findMany({
+      where: {
+        destinationId: where.destinationId,
+        travelAgency: where.travelAgency
       },
       select
     })
