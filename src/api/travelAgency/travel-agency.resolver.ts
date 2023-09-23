@@ -20,6 +20,14 @@ export class TravelAgencyResolver {
     return this.travelAgencyService.findOne(args, fields)
   }
 
+  @Query(() => TravelAgency, { nullable: true })
+  public async travelAgencyTemplates(
+    @Args() args: TravelAgencyArgs,
+    @GraphQLFields() { fields }: IGraphQLFields<TravelAgencySelect>
+  ): Promise<TravelAgency | null> {
+    return this.travelAgencyService.findOneTemplate(args, fields)
+  }
+
   @Mutation(() => TravelAgency)
   public async createTravelAgency(
     @Args('data') data: TravelAgencyCreateInput,
