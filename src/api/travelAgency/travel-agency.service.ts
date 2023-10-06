@@ -9,17 +9,8 @@ import { PrismaService } from 'src/shared/datasource/prisma/prisma.service'
 @Injectable()
 export class TravelAgencyService {
   constructor(private readonly prismaService: PrismaService) { }
-  public async findOne(
-    { where }: TravelAgencyArgs,
-    { select }: TravelAgencySelect,
-  ): Promise<TravelAgency> {
-    return this.prismaService.travelAgency.findUnique({
-      where,
-      select
-    })
-  }
 
-  public async findOneTemplate(
+  public async findOne(
     { where }: TravelAgencyArgs,
     { select: { applications, ...select } }: TravelAgencySelect,
   ): Promise<TravelAgency> {
