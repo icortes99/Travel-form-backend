@@ -186,7 +186,6 @@ type User {
 type Query {
   user(where: UserWhereUniqueInput!): User
   travelAgency(where: TravelAgencyWhereUniqueInput!): TravelAgency
-  travelAgencyTemplates(where: TravelAgencyWhereUniqueInput!): TravelAgency
   hotel(where: AttractionWhereUniqueInput!): Hotel
   destination(where: DestinationWhereUniqueInput!): Destination
   attraction(where: AttractionWhereUniqueInput!): Attraction
@@ -234,7 +233,7 @@ input HotelDesinationWhereUniqueInput {
 }
 
 input HotelsInDesinationAgencyWhereUniqueInput {
-  destinationId: Int!
+  destination: DestinationWhereUniqueInput!
   travelAgency: TravelAgencyWhereUniqueInput!
 }
 

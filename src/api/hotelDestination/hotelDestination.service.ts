@@ -28,7 +28,7 @@ export class HotelDestinationService {
   ): Promise<HotelDestination[]> {
     return this.prismaService.hotelDestination.findMany({
       where: {
-        destinationId: where.destinationId,
+        destination: where.destination,
         travelAgency: where.travelAgency
       },
       select
