@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Injectable } from '@nestjs/common'
+import { ConflictException, Injectable } from '@nestjs/common'
 
 import { Application, ApplicationSelect } from './model'
 
@@ -8,9 +8,14 @@ import { PrismaService } from 'src/shared/datasource/prisma/prisma.service'
 
 import validateAge from 'src/shared/util/refuse-by/age.input'
 
+import { UserService } from '../user/user.service'
+
 @Injectable()
 export class ApplicationService {
-  constructor(private readonly prismaService: PrismaService) { }
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly userService: UserService
+  ) { }
 
   public async findOne(
     { where }: ApplicationArgs,
@@ -38,6 +43,10 @@ export class ApplicationService {
         throw new ConflictException('This travel agency already supports this destination')
       }
     }
+
+    //const existingUser = await this.userService.findOne({ where: { email: data.user.connect.email } }, { select: { id: true } }) ?? null
+
+    //const user = existingUser ? { connect: { email: existingUser.email } } : { create: data.user.create }
 
     const attractionIDs: (string | number)[] = data.applicationAttractions.create.map(({ attraction }) => (
       attraction.connect.id ?? attraction.connect.uuid
@@ -73,7 +82,8 @@ export class ApplicationService {
     }
 
     const wrongDestinationAttractions = selectedAttractions.filter(({ destination: { id, uuid } }) => (
-      id !== data.destination.connect.id ?? uuid !== data.destination.connect.uuid
+      ((data.destination.connect.id !== undefined) && data.destination.connect.id !== id) ||
+      ((data.destination.connect.uuid !== undefined) && data.destination.connect.uuid !== uuid)
     ))
 
     if (wrongDestinationAttractions.length) {

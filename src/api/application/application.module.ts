@@ -4,9 +4,11 @@ import { ApplicationResolver } from './application.resolver'
 
 import { ApplicationService } from './application.service'
 
+import { UserService } from '../user/user.service'
+
 @Module({
   imports: [],
-  providers: [ApplicationResolver, ApplicationService],
+  providers: [UserService, ApplicationResolver, ApplicationService],
   exports: [ApplicationResolver, ApplicationService]
 })
 export class ApplicationModule { }

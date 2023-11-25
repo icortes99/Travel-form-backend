@@ -320,7 +320,8 @@ input ApplicationCreateInput {
 }
 
 input UserCreateNestedOneWithoutApplicationsInput {
-  connect: UserWhereUniqueInput!
+  connect: UserWhereUniqueInput
+  create: UserCreateInput
 }
 
 input TravelAgencyCreateNestedOneWithoutApplicationsInput {
