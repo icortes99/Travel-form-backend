@@ -2,8 +2,6 @@ import { Module } from '@nestjs/common'
 
 import { MailerModule } from '@nestjs-modules/mailer/dist'
 
-import { ConfigModule } from '@nestjs/config'
-
 import { ApplicationResolver } from './application.resolver'
 
 import { ApplicationService } from './application.service'
@@ -12,9 +10,6 @@ import { UserService } from '../user/user.service'
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true
-    }),
     MailerModule.forRoot({
       transport: {
         service: 'Gmail',
@@ -26,7 +21,7 @@ import { UserService } from '../user/user.service'
       }
     })
   ],
-  providers: [UserService, ApplicationResolver, ApplicationService],
+  providers: [UserService, MailerModule, ApplicationResolver, ApplicationService],
   exports: [ApplicationResolver, ApplicationService]
 })
 export class ApplicationModule { }

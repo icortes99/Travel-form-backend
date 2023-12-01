@@ -9,6 +9,8 @@ interface EnvVariables {
     NODE_ENV: Environment
     PORT: number
     DATABASE_URL: string
+    EMAIL_PASSWORD: string
+    EMAIL: string
 }
 
 const ENV_VARIABLES_SCHEMA = Joi.object<EnvVariables>({
@@ -16,7 +18,9 @@ const ENV_VARIABLES_SCHEMA = Joi.object<EnvVariables>({
         .default(LOCAL),
     PORT: Joi.number().default(5000),
     DATABASE_URL: Joi.string().required(),
-    JWT_SECRET: Joi.string().required()
+    JWT_SECRET: Joi.string().required(),
+    EMAIL_PASSWORD: Joi.string(),
+    EMAIL: Joi.string()
 })
 
 export { EnvVariables }

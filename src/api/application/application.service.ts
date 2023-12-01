@@ -2,7 +2,7 @@ import { ConflictException, Injectable } from '@nestjs/common'
 
 import { MailerService } from '@nestjs-modules/mailer'
 
-import { Application, ApplicationSelect, EmailData } from './model'
+import { Application, ApplicationSelect } from './model'
 
 import { ApplicationArgs, ApplicationCreateInput } from './dto'
 
@@ -100,13 +100,27 @@ export class ApplicationService {
       throw new ConflictException('There are attractions that are not related to the destination')
     }
 
-    if (!data.user) {
-      const email = {
-        to: '',
-        subject: ''
+    const owner = await this.prismaService.travelAgency.findUnique({
+      where: {
+        slug: data.travelAgency.connect.slug
+      },
+      select: {
+        owner: {
+          select: {
+            email: true
+          }
+        }
       }
+    })
 
-      await this.mailService.sendMail(email)
+    if (data.user) {
+      const email = {
+        to: 'cortes.ivan353@gmail.com',//owner.owner.email,
+        from: 'automessage.ivan@gmail.com',
+        subject: 'New Lead information',
+        text: JSON.stringify(data)
+      }
+      this.mailService.sendMail(email).then(() => console.log('email sent')).catch((err) => console.log('error: ', err))
     }
 
     return this.prismaService.application.create({
