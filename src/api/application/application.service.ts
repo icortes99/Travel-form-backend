@@ -1,6 +1,8 @@
 import { ConflictException, Injectable } from '@nestjs/common'
 
-import { Application, ApplicationSelect } from './model'
+import { MailerService } from '@nestjs-modules/mailer'
+
+import { Application, ApplicationSelect, EmailData } from './model'
 
 import { ApplicationArgs, ApplicationCreateInput } from './dto'
 
@@ -14,7 +16,8 @@ import { UserService } from '../user/user.service'
 export class ApplicationService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly mailService: MailerService
   ) { }
 
   public async findOne(
@@ -95,6 +98,15 @@ export class ApplicationService {
 
     if (wrongDestinationAttractions.length) {
       throw new ConflictException('There are attractions that are not related to the destination')
+    }
+
+    if (!data.user) {
+      const email = {
+        to: '',
+        subject: ''
+      }
+
+      await this.mailService.sendMail(email)
     }
 
     return this.prismaService.application.create({
