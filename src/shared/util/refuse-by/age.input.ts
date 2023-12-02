@@ -4,7 +4,7 @@ export default function validateAge(birth: Date, minAge: number): boolean {
   return age >= minAge
 }
 
-function getAge(birth: Date): number {
+export function getAge(birth: Date): number {
   const today = new Date()
   let age = today.getFullYear() - birth.getFullYear()
   const monthDiff = today.getMonth() - birth.getMonth()
