@@ -10,12 +10,13 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
 @Global()
 @Module({
     providers: [
-        {
+        /*{
             provide: ConfigService,
             useValue: new ConfigService(
                 `.env`//.${process.env.NODE_ENV || Environment.LOCAL}`
             )
-        }
+        }*/
+        ConfigService //New line
     ],
     exports: [ConfigService],
     imports: [
