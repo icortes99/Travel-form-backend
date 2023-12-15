@@ -13,7 +13,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
         {
             provide: ConfigService,
             useValue: new ConfigService(
-                `.env.${process.env.NODE_ENV || Environment.LOCAL}`
+                `.env`//.${process.env.NODE_ENV || Environment.LOCAL}`
             )
         }
     ],
