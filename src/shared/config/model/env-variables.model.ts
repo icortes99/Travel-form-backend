@@ -21,7 +21,7 @@ const ENV_VARIABLES_SCHEMA = Joi.object<EnvVariables>({
     JWT_SECRET: Joi.string().required(),
     EMAIL_PASSWORD: Joi.string(),
     EMAIL: Joi.string()
-})
+}).unknown()
 
 export { EnvVariables }
 export default ENV_VARIABLES_SCHEMA
