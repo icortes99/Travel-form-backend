@@ -47,14 +47,14 @@ export class ApplicationService {
       }
     }
 
-    const existingUserConnect = ((data.user.connect !== undefined) && await this.userService.findOne({ where: { email: data.user.connect.email } }, { select: { id: true } })) ?? null
-    const existingUserCreate = ((data.user.create !== undefined) && await this.userService.findOne({ where: { email: data.user.create.email } }, { select: { id: true } })) ?? null
+    const existingUserConnect = ((data.user?.connect !== undefined) && await this.userService.findOne({ where: { email: data.user?.connect?.email } }, { select: { id: true } })) ?? null
+    const existingUserCreate = ((data.user?.create !== undefined) && await this.userService.findOne({ where: { email: data.user?.create?.email } }, { select: { id: true } })) ?? null
 
-    if ((data.user.create !== undefined) && existingUserCreate) {
+    if ((data.user?.create !== undefined) && existingUserCreate) {
       throw new ConflictException('The user already exist.')
     }
 
-    if ((data.user.connect !== undefined) && !existingUserConnect) {
+    if ((data.user?.connect !== undefined) && !existingUserConnect) {
       throw new ConflictException('The user is not registered yet.')
     }
 
