@@ -1,7 +1,5 @@
 import { ConflictException, Injectable } from '@nestjs/common'
 
-import { MailerService } from '@nestjs-modules/mailer'
-
 import { Application, ApplicationSelect } from './model'
 
 import { ApplicationArgs, ApplicationCreateInput } from './dto'
@@ -12,12 +10,14 @@ import validateAge, { getAge } from 'src/shared/util/refuse-by/age.input'
 
 import { UserService } from '../user/user.service'
 
+import IntegrationManager, { StrategyParams } from '../../shared/integrations'
+
 @Injectable()
 export class ApplicationService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly userService: UserService,
-    private readonly mailService: MailerService
+    private integrationManager: IntegrationManager
   ) { }
 
   public async findOne(
@@ -116,66 +116,19 @@ export class ApplicationService {
         }
       })
 
-      const passengersHTML = data.passengers?.create?.map((passenger, i) => (
-        `<li>
-          <h3>Passenger ${i + 1}:</h3>
-          <p><strong>First Name:</strong> ${passenger.person.create.firstName}</p>
-          <p><strong>Last Name:</strong> ${passenger.person.create.lastName}</p>
-          <p><strong>Age:</strong> ${getAge(passenger.person.create.birthdate)}</p>
-        </li>`
-      ))
-
-      const attractionsHTML = selectedAttractions.map((attraction) => (
-        `<li><p>${attraction.name}</p></li>`
-      ))
-
-      const dates = {
-        startDate: new Date(data.startDate),
-        endDate: new Date(data.endDate)
+      const integrationParams: StrategyParams = {
+        email: {
+          attractions: selectedAttractions,
+          ownerEmail: owner.owner.email
+        },
+        notion: {
+          url: 'https://api.notion.com/v1/pages',
+          authToken: 'secret_jn226QSSBjyjdY7fAwBE86XuLsFfKl6xoauJXhS8678',
+          databaseId: '220f146bb2af4bf9a5d4954fea29dd56'
+        }
       }
 
-      const htmlBody = `
-      <h1>New Lead Information</h1>
-
-      <h2>User Information</h2>
-      <p><strong>First Name:</strong> ${data.user.create.person.create.firstName}</p>
-      <p><strong>Last Name:</strong> ${data.user.create.person.create.lastName}</p>
-      <p><strong>Email:</strong> ${data.user.create.email}</p>
-      <p><strong>Phone Number:</strong> ${data.user.create.phoneNumber}</p>
-      <p><strong>Age:</strong> ${getAge(data.user.create.person.create.birthdate)}</p>
-    
-      <h2>Passengers Information</h2>
-      <ul>
-        ${passengersHTML}
-      </ul>
-      <br>
-
-      <h2>Travel Information</h2>
-      <p><strong>Destination:</strong> ${selectedAttractions[0].destination.name}</p>
-      <h3>Attractions</h3>
-      <ul>
-        ${attractionsHTML}
-      </ul>
-      <br>
-    
-      <h2>Other Information</h2>
-      <p><strong>Start Date:</strong> ${dates.startDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
-      <p><strong>End Date:</strong> ${dates.endDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
-      <p><strong>User Current Location:</strong> ${data.userCurrentLocation}</p>
-      <p><strong>Has Entry Permission:</strong> ${(data.hasEntryPermission === true) ? 'Yes' : 'No'}</p>
-      <p><strong>Lead Source:</strong> ${data.leadSource}</p>
-      <p><strong>Trip Objective:</strong> ${data.tripObjective}</p>
-      <p><strong>Contact Preference:</strong> ${data.contactPreference}</p>
-      <br>
-      `
-
-      const email = {
-        to: 'cortes.ivan353@gmail.com',//owner.owner.email,
-        from: 'automessage.ivan@gmail.com',
-        subject: 'New Lead information',
-        html: htmlBody
-      }
-      this.mailService.sendMail(email).then(() => console.log('email sent')).catch((err) => console.log('error: ', err))
+      await this.integrationManager.executeIntegrations(['email', 'notion'], data, integrationParams)
     }
 
     return this.prismaService.application.create({
