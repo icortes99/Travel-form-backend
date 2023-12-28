@@ -16,70 +16,146 @@ export class NotionStrategy implements IntegrationStrategy {
       'Content-Type': 'application/json'
     }
 
-    //convertir data
-    /*
-    {
-    "parent": { "database_id": "220f146bb2af4bf9a5d4954fea29dd56" },
-    "icon": {
-        "emoji": "🥬"
-    },
-    "cover": {
-        "external": {
-            "url": "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg"
-        }
-    },
-    "properties": {
-        "Name": {
-            "title": [
-                {
-                    "text": {
-                        "content": "Tuscan Kale"
-                    }
-                }
-            ]
-        },
-    "Description": {
-      "rich_text": [
-        {
-          "text": {
-            "content": "A dark green leafy vegetable"
-          }
-        }
-      ]
-    },
-    "Price": { "number": 2.5 }
-  },
-  "children": [
-    {
+    const passengers = data?.passengers?.create.map(passenger => ({
       "object": "block",
-      "type": "heading_2",
-      "heading_2": {
-        "rich_text": [{ "type": "text", "text": { "content": "Lacinato kale" } }]
-      }
-    },
-    {
-      "object": "block",
-      "type": "paragraph",
-      "paragraph": {
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
         "rich_text": [
           {
             "type": "text",
             "text": {
-              "content": "Lacinato kale is a variety of kale with a long tradition",
-              "link": { "url": "https://en.wikipedia.org/wiki/Lacinato_kale" }
+              "content": `Name: ${passenger?.person?.create?.firstName} ${passenger?.person?.create?.lastName}. Age: ${passenger?.person?.create?.birthdate}`
             }
           }
         ]
       }
+    }))
+
+    const body = {
+      "parent": { "database_id": notion.databaseId },
+      "icon": {
+        "emoji": "🧲"
+      },
+      "properties": {
+        "User": {
+          "title": [
+            {
+              "text": {
+                "content": `${data?.user?.create?.person?.create?.firstName} ${data?.user?.create?.person?.create?.lastName}`
+              }
+            }
+          ]
+        },
+        "Email": {
+          "rich_text": [
+            {
+              "text": {
+                "content": data?.user?.create?.email
+              }
+            }
+          ]
+        },
+        "Age": { "number": data?.user?.create?.person?.create?.birthdate },
+        "Phone": {
+          "rich_text": [
+            {
+              "text": {
+                "content": data?.user?.create?.phoneNumber
+              }
+            }
+          ]
+        },
+        "Passengers": { "number": data?.passengers?.create?.length },
+        "Destiny": {
+          "rich_text": [
+            {
+              "text": {
+                "content": notion.destiny
+              }
+            }
+          ]
+        },
+        "Attractions": {
+          "rich_text": [
+            {
+              "text": {
+                "content": notion?.attractions ?? 'No data'
+              }
+            }
+          ]
+        },
+        "From": {
+          "date": {
+            "start": data?.startDate
+          }
+        },
+        "To": {
+          "date": {
+            "start": data?.endDate
+          }
+        },
+        "Country": {
+          "rich_text": [
+            {
+              "text": {
+                "content": data?.userCurrentLocation
+              }
+            }
+          ]
+        },
+        "LeadSource": {
+          "rich_text": [
+            {
+              "text": {
+                "content": data?.leadSource
+              }
+            }
+          ]
+        },
+        "Contact Preference": {
+          "rich_text": [
+            {
+              "text": {
+                "content": data?.contactPreference
+              }
+            }
+          ]
+        },
+        "Trip Objective": {
+          "rich_text": [
+            {
+              "text": {
+                "content": data?.tripObjective
+              }
+            }
+          ]
+        },
+        "Visa": {
+          "rich_text": [
+            {
+              "text": {
+                "content": data?.hasEntryPermission ? 'Yes' : 'No'
+              }
+            }
+          ]
+        }
+      },
+      "children": [
+        {
+          "object": "block",
+          "type": "heading_2",
+          "heading_2": {
+            "rich_text": [{ "type": "text", "text": { "content": "Lacinato kale" } }]
+          }
+        },
+        ...passengers
+      ]
     }
-  ]
-}
-    */
 
     fetch(notion.url, {
       method: 'POST',
       headers: headers,
-      body: ''
+      body: JSON.stringify(body)
     })
       .then(() => console.log('notion registered'))
       .catch(e => console.log(e))

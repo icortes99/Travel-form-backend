@@ -116,6 +116,12 @@ export class ApplicationService {
         }
       })
 
+      const destiny = await this.prismaService.destination.findUnique({
+        where: {
+          uuid: data.destination.connect.uuid
+        }
+      })
+
       const integrationParams: StrategyParams = {
         email: {
           attractions: selectedAttractions,
@@ -124,7 +130,9 @@ export class ApplicationService {
         notion: {
           url: 'https://api.notion.com/v1/pages',
           authToken: 'secret_jn226QSSBjyjdY7fAwBE86XuLsFfKl6xoauJXhS8678',
-          databaseId: '220f146bb2af4bf9a5d4954fea29dd56'
+          databaseId: '220f146bb2af4bf9a5d4954fea29dd56',
+          attractions: selectedAttractions.map(att => att.name).join(', '),
+          destiny: destiny.name
         }
       }
 

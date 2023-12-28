@@ -9,6 +9,8 @@ export interface StrategyParams {
     url: string
     authToken: string
     databaseId: string
+    attractions?: string
+    destiny: string
   }
 }
 
