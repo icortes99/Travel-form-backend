@@ -8,6 +8,8 @@ import { ApplicationService } from './application.service'
 
 import { UserService } from '../user/user.service'
 
+import { NotionService, NotionData } from 'src/shared/modules/crm'
+
 @Module({
   imports: [
     MailerModule.forRoot({
@@ -21,7 +23,7 @@ import { UserService } from '../user/user.service'
       }
     })
   ],
-  providers: [UserService, MailerModule, ApplicationResolver, ApplicationService],
+  providers: [NotionService, UserService, MailerModule, ApplicationResolver, ApplicationService],
   exports: [ApplicationResolver, ApplicationService]
 })
 export class ApplicationModule { }

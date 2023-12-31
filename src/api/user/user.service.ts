@@ -6,7 +6,7 @@ import { UserArgs, UserCreateInput } from './dto'
 
 import { PrismaService } from 'src/shared/datasource/prisma/prisma.service'
 
-import validateAge from 'src/shared/util/refuse-by/age.input'
+import validateAge from 'src/shared/util/refuse-by/date'
 
 @Injectable()
 export class UserService {
