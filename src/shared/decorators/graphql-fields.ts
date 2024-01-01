@@ -1,6 +1,6 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common'
 import { GqlExecutionContext } from '@nestjs/graphql'
-import * as graphqlFields from 'graphql-fields'
+import graphqlFields from 'graphql-fields'
 
 export interface IGraphQLFields<T> {
   fields: T

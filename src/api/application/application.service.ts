@@ -20,7 +20,7 @@ export class ApplicationService {
     private readonly prismaService: PrismaService,
     private readonly userService: UserService,
     private readonly notionService: NotionService,
-    //private readonly mailService: MailService
+    private readonly mailService: MailService
   ) { }
 
   public async findOne(
@@ -175,6 +175,7 @@ export class ApplicationService {
         }))
       }
 
+      await this.mailService.sendEmail(this.formatEmail(data, selectedAttractions), 'cortes.ivan353@gmail.com')
       await this.notionService.updateNotion(notionData)
     }
 
