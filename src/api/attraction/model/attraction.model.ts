@@ -24,12 +24,6 @@ export class Attraction {
   @Field(() => [String], { nullable: true })
   images?: string[]
 
-  @Field(() => Float, { nullable: true })
-  travelDuration?: number
-
-  @Field(() => Number, { nullable: true })
-  travelDistance?: number
-
   @Field(() => Destination, { nullable: true })
   destination?: Destination
 

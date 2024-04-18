@@ -4,12 +4,18 @@ import { AttractionCreateNestedOneWithoutApplicationAttractionsInput } from 'src
 
 @InputType()
 export class ApplicationAttractionCreateWithoutApplicationInput {
+  @Field(() => Date)
+  startDate: Date
+
+  @Field(() => Date)
+  endDate: Date
+
   @Field(() => AttractionCreateNestedOneWithoutApplicationAttractionsInput)
   attraction: AttractionCreateNestedOneWithoutApplicationAttractionsInput
 }
 
 @InputType()
-export class ApplicationAttractionCreateNestedManyWithoutApplicationInput {
+export class ApplicationAttractionCreateNestedManyWithoutApplicationInput { 
   @Field(() => [ApplicationAttractionCreateWithoutApplicationInput])
   create?: ApplicationAttractionCreateWithoutApplicationInput[]
 }

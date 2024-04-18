@@ -10,16 +10,16 @@ export class ConfigService {
     private readonly envVariables: EnvVariables
 
     constructor(filePath: string) {
-        /*dotenv.config({
+        dotenv.config({
             path: `.env.${process.env.NODE_ENV || 'local'}`
         })
 
         const config = dotenv.parse(fs.readFileSync(filePath))
         this.envVariables = this.validateInput(config)
 
-        this.get = this.get.bind(this)*/
+        this.get = this.get.bind(this)
 
-        this.envVariables = this.validateInput(process.env) //New line
+        //this.envVariables = this.validateInput(process.env) //New line
     }
 
     public get(key: keyof EnvVariables): string | number | boolean {

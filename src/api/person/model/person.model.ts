@@ -16,8 +16,8 @@ export class Person {
   @Field(() => String, { nullable: true })
   lastName?: string
 
-  @Field(() => Date, { nullable: true })
-  birthdate?: Date
+  @Field(() => Int, { nullable: true })
+  age?: number
 
   @Field(() => Date, { nullable: true })
   createdAt?: Date

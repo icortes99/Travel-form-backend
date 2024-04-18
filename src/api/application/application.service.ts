@@ -6,8 +6,6 @@ import { ApplicationArgs, ApplicationCreateInput } from './dto'
 
 import { PrismaService } from 'src/shared/datasource/prisma/prisma.service'
 
-import validateAge, { getAge } from 'src/shared/util/refuse-by/date'
-
 import { UserService } from '../user/user.service'
 
 import { NotionService, NotionData } from 'src/shared/modules/crm'
@@ -135,19 +133,19 @@ export class ApplicationService {
               select: {
                 firstName: true,
                 lastName: true,
-                birthdate: true
+                age: true
               }
             },
             phoneNumber: true
           }
         })
         user = `${fetchUser?.person?.firstName} ${fetchUser?.person?.lastName}`
-        age = getAge(fetchUser?.person?.birthdate)
+        age = fetchUser?.person?.age
         email = `${fetchUser?.email}`
         phone = `${fetchUser?.phoneNumber}`
       } else {
         user = `${data?.user?.create?.person?.create?.firstName} ${data?.user?.create?.person?.create?.lastName}`
-        age = getAge(data?.user?.create?.person?.create?.birthdate)
+        age = data?.user?.create?.person?.create?.age
         email = `${data?.user?.create?.email}`
         phone = `${data?.user?.create?.phoneNumber}`
       }
@@ -171,7 +169,7 @@ export class ApplicationService {
         visa: data?.hasEntryPermission,
         passengers: data?.passengers?.create?.map(passenger => ({
           name: `${passenger.person.create.firstName} ${passenger.person.create.lastName}`,
-          age: getAge(passenger.person.create.birthdate)
+          age: passenger.person.create.age
         }))
       }
 
@@ -191,7 +189,7 @@ export class ApplicationService {
         <h3>Passenger ${i + 1}:</h3>
         <p><strong>First Name:</strong> ${passenger.person.create.firstName}</p>
         <p><strong>Last Name:</strong> ${passenger.person.create.lastName}</p>
-        <p><strong>Age:</strong> ${getAge(passenger.person.create.birthdate)}</p>
+        <p><strong>Age:</strong> ${passenger.person.create.age}</p>
       </li>`
     ))
 
@@ -212,7 +210,7 @@ export class ApplicationService {
       <p><strong>Last Name:</strong> ${data.user.create.person.create.lastName}</p>
       <p><strong>Email:</strong> ${data.user.create.email}</p>
       <p><strong>Phone Number:</strong> ${data.user.create.phoneNumber}</p>
-      <p><strong>Age:</strong> ${getAge(data.user.create.person.create.birthdate)}</p>
+      <p><strong>Age:</strong> ${data.user.create.person.create.age}</p>
     
       <h2>Passengers Information</h2>
       <ul>

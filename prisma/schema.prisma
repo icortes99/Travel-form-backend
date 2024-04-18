@@ -12,7 +12,7 @@ model Person {
   uuid       String       @unique @default(uuid())
   firstName  String       @map("first_name")
   lastName   String       @map("last_name")
-  birthdate  DateTime
+  age        Int
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   user       User?
@@ -102,8 +102,6 @@ model Attraction {
   name                   String
   description            String
   images                 String[]
-  travelDuration         Float                   @map("travel_duration")
-  travelDistance         Float                   @map("travel_distance")
   createdAt              DateTime                @default(now())
   updatedAt              DateTime                @updatedAt
   destination            Destination             @relation(fields: [destinationId], references: [id])
@@ -167,12 +165,15 @@ model Passengers {
 }
 
 model ApplicationAttraction {
+  id            Int         @id @default(autoincrement())
+  uuid          String      @unique @default(uuid())
   applicationId Int         @map("application_id")
   attractionId  Int         @map("attraction_id")
+  startDate     DateTime    @map("start_date")
+  endDate       DateTime    @map("end_date")
   application   Application @relation(fields: [applicationId], references: [id])
   attraction    Attraction  @relation(fields: [attractionId], references: [id])
 
-  @@unique([applicationId, attractionId])
   @@map("application_attraction")
 }
 

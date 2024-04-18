@@ -3,7 +3,7 @@ interface PersonPrismaSelect {
     uuid?: boolean
     firstName?: boolean
     lastName?: boolean
-    birthdate?: boolean
+    age?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     passengers?: boolean

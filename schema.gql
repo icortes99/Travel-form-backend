@@ -3,11 +3,20 @@
 # ------------------------------------------------------
 
 type ApplicationAttraction {
-  applicationId: Float!
-  attractionId: Float!
-  application: Application!
-  attraction: Attraction!
+  id: Float
+  uuid: String
+  applicationId: Float
+  attractionId: Float
+  startDate: DateTime
+  endDate: DateTime
+  application: Application
+  attraction: Attraction
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Attraction {
   id: Float
@@ -16,18 +25,11 @@ type Attraction {
   name: String
   description: String
   images: [String!]
-  travelDuration: Float
-  travelDistance: Float
   destination: Destination
   applicationAttractions: [ApplicationAttraction!]
   createdAt: DateTime
   updatedAt: DateTime
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type Destination {
   id: Float
@@ -48,7 +50,7 @@ type Person {
   uuid: String
   firstName: String
   lastName: String
-  birthdate: DateTime
+  age: Int
   createdAt: DateTime
   updatedAt: DateTime
   passengers: [Passengers!]
@@ -263,7 +265,7 @@ input PersonCreateNestedOneWithoutUserInput {
 input PersonCreateWithoutUserInput {
   firstName: String!
   lastName: String!
-  birthdate: DateTime!
+  age: Int!
 }
 
 input TravelAgencyCreateInput {
@@ -295,8 +297,6 @@ input AttractionCreateInput {
   name: String!
   description: String!
   images: [String!]!
-  travelDuration: Float!
-  travelDistance: Float!
   destination: DestinationCreateNestedOneWithoutAttractionsInput!
 }
 
@@ -352,7 +352,7 @@ input PersonCreateNestedOneWithoutPassengersInput {
 input PersonCreateWithoutPassengersInput {
   firstName: String!
   lastName: String!
-  birthdate: DateTime!
+  age: Int!
 }
 
 input ApplicationAttractionCreateNestedManyWithoutApplicationInput {
@@ -360,6 +360,8 @@ input ApplicationAttractionCreateNestedManyWithoutApplicationInput {
 }
 
 input ApplicationAttractionCreateWithoutApplicationInput {
+  startDate: DateTime!
+  endDate: DateTime!
   attraction: AttractionCreateNestedOneWithoutApplicationAttractionsInput!
 }
 

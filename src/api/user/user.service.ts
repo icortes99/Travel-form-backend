@@ -6,8 +6,6 @@ import { UserArgs, UserCreateInput } from './dto'
 
 import { PrismaService } from 'src/shared/datasource/prisma/prisma.service'
 
-import validateAge from 'src/shared/util/refuse-by/date'
-
 @Injectable()
 export class UserService {
   constructor(private readonly prismaService: PrismaService) { }
@@ -34,7 +32,7 @@ export class UserService {
     { select }: UserSelect,
   ): Promise<User> {
     if (data.person) {
-      if (!validateAge(data.person.create.birthdate, 0)) {
+      if ((data.person.create.age).valueOf() > 0) {
         throw new BadRequestException('Date not supported')
       }
     }

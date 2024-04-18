@@ -6,15 +6,27 @@ import { Attraction } from 'src/api/attraction/model'
 
 @ObjectType()
 export class ApplicationAttraction {
-  @Field(() => Number)
+  @Field(() => Number, { nullable: true })
+  id?: number
+
+  @Field(() => String, { nullable: true })
+  uuid?: string
+
+  @Field(() => Number, { nullable: true })
   applicationId?: number
 
-  @Field(() => Number)
+  @Field(() => Number, { nullable: true })
   attractionId?: number
 
-  @Field(() => Application)
+  @Field(() => Date, { nullable: true })
+  startDate?: Date
+
+  @Field(() => Date, { nullable: true })
+  endDate?: Date
+
+  @Field(() => Application, { nullable: true })
   application?: Application
 
-  @Field(() => Attraction)
+  @Field(() => Attraction, { nullable: true })
   attraction?: Attraction
 }
