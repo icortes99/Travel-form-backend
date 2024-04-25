@@ -17,6 +17,9 @@ export class Passengers {
   @Field(() => Number)
   applicationId?: number
 
+  @Field(() => Number)
+  roomAssigned?: number
+
   @Field(() => Suite)
   suite?: Suite
 

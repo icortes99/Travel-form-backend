@@ -60,6 +60,7 @@ type Passengers {
   suiteId: Float!
   personId: Float!
   applicationId: Float!
+  roomAssigned: Float!
   suite: Suite!
   person: Person!
   application: Application!
@@ -339,6 +340,7 @@ input PassengersCreateNestedManyWithoutApplicationInput {
 input PassengersCreateWithoutApplicationInput {
   suite: SuiteCreateNestedOneWithoutPassengersInput!
   person: PersonCreateNestedOneWithoutPassengersInput!
+  roomAssigned: Float!
 }
 
 input SuiteCreateNestedOneWithoutPassengersInput {

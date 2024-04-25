@@ -5,6 +5,7 @@ interface PassengersPrismaSelect {
   suite?: boolean
   person?: boolean
   application?: boolean
+  roomAssigned?: boolean
 }
 
 export interface PassengersSelect {
