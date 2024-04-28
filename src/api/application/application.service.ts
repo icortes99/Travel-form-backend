@@ -158,7 +158,7 @@ export class ApplicationService {
         email: email,
         age: age,
         phone: phone,
-        destiny: `${selectedAttractions[0]?.name}`,
+        destiny: `${selectedAttractions[0].destination?.name}`,
         attractions: selectedAttractions.map(attraction => attraction.name).join(', '),
         from: `${data?.startDate}`,
         to: `${data?.endDate}`,
@@ -173,7 +173,7 @@ export class ApplicationService {
         }))
       }
 
-      await this.mailService.sendEmail(this.formatEmail(data, selectedAttractions), 'cortes.ivan353@gmail.com')
+      await this.mailService.sendEmail(this.formatEmail(data, selectedAttractions), 'cortes.ivan353@gmail.com') // owner?.owner?.email
       await this.notionService.updateNotion(notionData)
     }
 
