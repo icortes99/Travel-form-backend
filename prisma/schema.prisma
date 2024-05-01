@@ -51,7 +51,7 @@ model TravelAgency {
   updatedAt         DateTime           @updatedAt
   applications      Application[]
   owner             User               @relation(fields: [ownerId], references: [id])
-  hotelDestinations HotelDestination[]
+  hotelAttractions  HotelAttraction[]
 
   @@map("travel_agency")
 }
@@ -91,7 +91,6 @@ model Destination {
   updatedAt         DateTime           @updatedAt
   attractions       Attraction[]
   applications      Application[]
-  hotelDestinations HotelDestination[]
 
   @@map("destination")
 }
@@ -107,6 +106,7 @@ model Attraction {
   updatedAt              DateTime                @updatedAt
   destination            Destination             @relation(fields: [destinationId], references: [id])
   applicationAttractions ApplicationAttraction[]
+  hotelAttractions       HotelAttraction[]
 
   @@map("attraction")
 }
@@ -120,21 +120,21 @@ model Hotel {
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   suites            Suite[]
-  hotelDestinations HotelDestination[]
+  hotelAttractions  HotelAttraction[]
 
   @@map("hotel")
 }
 
-model HotelDestination {
+model HotelAttraction {
   hotelId        Int          @map("hotel_id")
-  destinationId  Int          @map("destination_id")
+  attractionId   Int          @map("attraction_id")
   travelAgencyId Int          @map("travel_agency_id")
   hotel          Hotel        @relation(fields: [hotelId], references: [id])
-  destination    Destination  @relation(fields: [destinationId], references: [id])
+  attraction     Attraction   @relation(fields: [attractionId], references: [id])
   travelAgency   TravelAgency @relation(fields: [travelAgencyId], references: [id])
 
-  @@unique([hotelId, destinationId, travelAgencyId])
-  @@map("hotel_destination")
+  @@unique([hotelId, attractionId, travelAgencyId])
+  @@map("hotel_attraction")
 }
 
 model Suite {
