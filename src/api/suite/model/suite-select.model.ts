@@ -1,4 +1,6 @@
-import { PassengersSelect } from "src/api/passengers/model"
+import { HotelSelect } from 'src/api/hotel/model'
+
+import { PassengersSelect } from 'src/api/passengers/model'
 
 interface SuitePrismaSelect {
   id?: boolean
@@ -10,7 +12,7 @@ interface SuitePrismaSelect {
   feePerAdult?: boolean
   feePerKid?: boolean
   basedPrice?: boolean
-  hotel?: boolean
+  hotel?: HotelSelect
   passengers?: PassengersSelect
 }
 

@@ -48,8 +48,34 @@ export class ApplicationService {
       }
     }
 
-    const existingUserConnect = ((data.user?.connect !== undefined) && await this.userService.findOne({ where: { email: data.user?.connect?.email } }, { select: { id: true } })) ?? null
-    const existingUserCreate = ((data.user?.create !== undefined) && await this.userService.findOne({ where: { email: data.user?.create?.email } }, { select: { id: true } })) ?? null
+    const existingUserConnect = ((data.user?.connect !== undefined) && await this.userService.findOne({
+      where: {
+        email: data.user?.connect?.email
+      }
+    }, {
+      select: {
+        id: true,
+        email: true,
+        person: {
+          select: {
+            firstName: true,
+            lastName: true,
+            age: true
+          }
+        },
+        phoneNumber: true
+      }
+    })) ?? null
+
+    const existingUserCreate = ((data.user?.create !== undefined) && await this.userService.findOne({
+      where: {
+        email: data.user?.create?.email
+      }
+    }, {
+      select: {
+        id: true
+      }
+    })) ?? null
 
     if ((data.user?.create !== undefined) && existingUserCreate) {
       throw new ConflictException('The user already exist.')
@@ -123,26 +149,10 @@ export class ApplicationService {
       let age: number = 0
 
       if (existingUserConnect) {
-        const fetchUser = await this.prismaService.user.findUnique({
-          where: {
-            email: data.user.connect.email
-          },
-          select: {
-            email: true,
-            person: {
-              select: {
-                firstName: true,
-                lastName: true,
-                age: true
-              }
-            },
-            phoneNumber: true
-          }
-        })
-        user = `${fetchUser?.person?.firstName} ${fetchUser?.person?.lastName}`
-        age = fetchUser?.person?.age
-        email = `${fetchUser?.email}`
-        phone = `${fetchUser?.phoneNumber}`
+        user = `${existingUserConnect?.person?.firstName} ${existingUserConnect?.person?.lastName}`
+        age = existingUserConnect?.person?.age
+        email = `${existingUserConnect?.email}`
+        phone = `${existingUserConnect?.phoneNumber}`
       } else {
         user = `${data?.user?.create?.person?.create?.firstName} ${data?.user?.create?.person?.create?.lastName}`
         age = data?.user?.create?.person?.create?.age
