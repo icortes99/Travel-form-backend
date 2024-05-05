@@ -2,14 +2,15 @@ import { Field, ObjectType } from '@nestjs/graphql'
 
 import { Application } from 'src/api/application/model'
 
+import { Hotel } from 'src/api/hotel/model'
+
 import { Person } from 'src/api/person/model'
 
-import { Suite } from 'src/api/suite/model'
 
 @ObjectType()
 export class Passengers {
   @Field(() => Number)
-  suiteId?: number
+  hotelId?: number
 
   @Field(() => Number)
   personId?: number
@@ -20,8 +21,8 @@ export class Passengers {
   @Field(() => Number)
   roomAssigned?: number
 
-  @Field(() => Suite)
-  suite?: Suite
+  @Field(() => Hotel)
+  hotel?: Hotel
 
   @Field(() => Person)
   person?: Person

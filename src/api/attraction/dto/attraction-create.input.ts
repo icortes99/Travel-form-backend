@@ -1,4 +1,4 @@
-import { Field, Float, InputType } from '@nestjs/graphql'
+import { Field, InputType } from '@nestjs/graphql'
 
 import { MaxLength, MinLength } from 'class-validator'
 
@@ -25,6 +25,12 @@ export class AttractionCreateInput {
 
 @InputType()
 export class AttractionCreateNestedOneWithoutApplicationAttractionsInput {
+  @Field(() => AttractionWhereUniqueInput)
+  connect: AttractionWhereUniqueInput
+}
+
+@InputType()
+export class HotelAttractionCreateNestedManyWithoutAttractionInput {
   @Field(() => AttractionWhereUniqueInput)
   connect: AttractionWhereUniqueInput
 }

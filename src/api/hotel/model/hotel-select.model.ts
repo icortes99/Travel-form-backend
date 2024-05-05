@@ -1,6 +1,6 @@
-import { HotelDestinationSelect } from 'src/api/hotelDestination/model'
+import { HotelAttractionSelect } from 'src/api/hotelAttraction/model'
 
-import { SuiteSelect } from 'src/api/suite/model'
+import { PassengersSelect } from 'src/api/passengers/model'
 
 interface HotelPrismaSelect {
   id?: boolean
@@ -8,8 +8,9 @@ interface HotelPrismaSelect {
   name?: boolean
   description?: boolean
   images?: boolean
-  suites?: SuiteSelect
-  hotelDestinations?: HotelDestinationSelect
+  roomTypes?: boolean
+  hotelAttractions?: HotelAttractionSelect
+  passengers?: PassengersSelect
   createdAt?: boolean
   updatedAt?: boolean
 }

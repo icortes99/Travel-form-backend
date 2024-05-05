@@ -30,19 +30,7 @@ export class TravelAgencyCreateInput {
 }
 
 @InputType()
-export class TravelAgencyCreateNestedOneWithoutDestinationsInput {
-  @Field(() => TravelAgencyWhereUniqueInput)
-  connect: TravelAgencyWhereUniqueInput
-}
-
-@InputType()
 export class TravelAgencyCreateNestedOneWithoutApplicationsInput {
-  @Field(() => TravelAgencyWhereUniqueInput)
-  connect: TravelAgencyWhereUniqueInput
-}
-
-@InputType()
-export class HotelDestinationCreateNestedManyWithoutTravelAgencyInput {
   @Field(() => TravelAgencyWhereUniqueInput)
   connect: TravelAgencyWhereUniqueInput
 }

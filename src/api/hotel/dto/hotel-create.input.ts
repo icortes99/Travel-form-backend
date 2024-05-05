@@ -17,10 +17,13 @@ export class HotelCreateInput {
 
   @Field(() => [String])
   images: string[]
+
+  @Field(() => [String])
+  roomTypes: string[]
 }
 
 @InputType()
-export class HotelDestinationCreateNestedManyWithoutHotelInput {
+export class HotelAttractionCreateNestedManyWithoutHotelInput {
   @Field(() => HotelWhereUniqueInput)
   connect: HotelWhereUniqueInput
 }
@@ -33,6 +36,12 @@ export class SuiteUncheckedCreateNestedManyWithoutHotelInput {
 
 @InputType()
 export class HotelCreateNestedOneWithoutSuitesInput {
+  @Field(() => HotelWhereUniqueInput)
+  connect: HotelWhereUniqueInput
+}
+
+@InputType()
+export class HotelCreateNestedOneWithoutPassengersInput {
   @Field(() => HotelWhereUniqueInput)
   connect: HotelWhereUniqueInput
 }

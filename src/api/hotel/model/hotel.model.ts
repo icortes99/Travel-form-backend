@@ -1,8 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql'
 
-import { HotelDestination } from 'src/api/hotelDestination/model'
-
-import { Suite } from 'src/api/suite/model'
+import { HotelAttraction } from 'src/api/hotelAttraction/model'
 
 @ObjectType()
 export class Hotel {
@@ -21,8 +19,8 @@ export class Hotel {
   @Field(() => [String], { nullable: true })
   images?: string[]
 
-  @Field(() => [Suite], { nullable: true })
-  suites?: Suite[]
+  @Field(() => [String], { nullable: true })
+  roomTypes?: string[]
 
   @Field(() => Date, { nullable: true })
   createdAt?: Date
@@ -30,6 +28,6 @@ export class Hotel {
   @Field(() => Date, { nullable: true })
   updatedAt?: Date
 
-  @Field(() => [HotelDestination], { nullable: true })
-  hotelDestinations?: HotelDestination[]
+  @Field(() => [HotelAttraction], { nullable: true })
+  hotelAttractions?: HotelAttraction[]
 }

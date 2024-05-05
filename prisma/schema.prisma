@@ -51,7 +51,6 @@ model TravelAgency {
   updatedAt         DateTime           @updatedAt
   applications      Application[]
   owner             User               @relation(fields: [ownerId], references: [id])
-  hotelAttractions  HotelAttraction[]
 
   @@map("travel_agency")
 }
@@ -117,10 +116,11 @@ model Hotel {
   name              String
   description       String
   images            String[]
+  roomTypes         String[]
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
-  suites            Suite[]
   hotelAttractions  HotelAttraction[]
+  passengers        Passengers[]
 
   @@map("hotel")
 }
@@ -128,41 +128,23 @@ model Hotel {
 model HotelAttraction {
   hotelId        Int          @map("hotel_id")
   attractionId   Int          @map("attraction_id")
-  travelAgencyId Int          @map("travel_agency_id")
   hotel          Hotel        @relation(fields: [hotelId], references: [id])
   attraction     Attraction   @relation(fields: [attractionId], references: [id])
-  travelAgency   TravelAgency @relation(fields: [travelAgencyId], references: [id])
 
-  @@unique([hotelId, attractionId, travelAgencyId])
+  @@unique([hotelId, attractionId])
   @@map("hotel_attraction")
 }
 
-model Suite {
-  id          Int          @id @default(autoincrement())
-  uuid        String       @unique @default(uuid())
-  hotelId     Int          @map("hotel_id")
-  name        String
-  description String
-  images      String[]
-  feePerAdult Float        @map("fee_per_adult")
-  feePerKid   Float        @map("fee_per_kid")
-  basedPrice  Float        @map("based_price")
-  hotel       Hotel        @relation(fields: [hotelId], references: [id])
-  passengers  Passengers[]
-
-  @@map("suite")
-}
-
 model Passengers {
-  suiteId       Int         @map("suite_id")
+  hotelId       Int         @map("suite_id")
   personId      Int         @map("person_id")
   applicationId Int         @map("application_id")
   roomAssigned  Int         @map("room_assigned")
-  suite         Suite       @relation(fields: [suiteId], references: [id])
   person        Person      @relation(fields: [personId], references: [id])
   application   Application @relation(fields: [applicationId], references: [id])
+  hotel         Hotel       @relation(fields: [hotelId], references: [id])
 
-  @@unique([suiteId, personId, applicationId])
+  @@unique([hotelId, personId, applicationId])
   @@map("passengers")
 }
 
