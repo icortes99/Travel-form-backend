@@ -32,6 +32,18 @@ type ApplicationAttraction {
   attraction: Attraction
 }
 
+type Hotel {
+  id: Int
+  uuid: String
+  name: String
+  description: String
+  images: [String!]
+  roomTypes: [String!]
+  createdAt: DateTime
+  updatedAt: DateTime
+  attraction: Attraction
+}
+
 type Attraction {
   id: Float
   uuid: String
@@ -41,6 +53,7 @@ type Attraction {
   images: [String!]
   destination: Destination
   applicationAttractions: [ApplicationAttraction!]
+  hotels: [Hotel!]
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -56,25 +69,6 @@ type Destination {
   applications: [Application!]
   createdAt: DateTime
   updatedAt: DateTime
-}
-
-type HotelAttraction {
-  hotelId: Int
-  attractionId: Int
-  hotel: Hotel
-  attraction: Attraction
-}
-
-type Hotel {
-  id: Int
-  uuid: String
-  name: String
-  description: String
-  images: [String!]
-  roomTypes: [String!]
-  createdAt: DateTime
-  updatedAt: DateTime
-  hotelAttractions: [HotelAttraction!]
 }
 
 type Person {
@@ -175,8 +169,6 @@ type Query {
   destination(where: DestinationWhereUniqueInput!): Destination
   attraction(where: AttractionWhereUniqueInput!): Attraction
   application(where: ApplicationWhereUniqueInput!): Application
-  hotelDestination(where: HotelAttractionWhereUniqueInput!): HotelAttraction
-  hotelsInDestinationAgency(where: HotelAttractionWhereUniqueInput!): [HotelAttraction!]
 }
 
 input UserWhereUniqueInput {
@@ -210,15 +202,6 @@ input ApplicationWhereUniqueInput {
   id: Int
 }
 
-input HotelAttractionWhereUniqueInput {
-  hotelId_attractionId: HotelAttractionHotelIdAttractionIdCompoundUniqueInput
-}
-
-input HotelAttractionHotelIdAttractionIdCompoundUniqueInput {
-  hotelId: Float
-  attractionId: Float
-}
-
 type Mutation {
   createUser(data: UserCreateInput!): User!
   createTravelAgency(data: TravelAgencyCreateInput!): TravelAgency!
@@ -226,7 +209,6 @@ type Mutation {
   createDestination(data: DestinationCreateInput!): Destination!
   createAttraction(data: AttractionCreateInput!): Attraction!
   createApplication(data: ApplicationCreateInput!): Application!
-  createHotelDestination(data: HotelAttractionCreateInput!): HotelAttraction!
 }
 
 input UserCreateInput {
@@ -264,6 +246,11 @@ input HotelCreateInput {
   description: String!
   images: [String!]!
   roomTypes: [String!]!
+  attraction: AttractionCreateNestedOneWithoutHotelsInput!
+}
+
+input AttractionCreateNestedOneWithoutHotelsInput {
+  connect: AttractionWhereUniqueInput!
 }
 
 input DestinationCreateInput {
@@ -347,18 +334,5 @@ input ApplicationAttractionCreateWithoutApplicationInput {
 }
 
 input AttractionCreateNestedOneWithoutApplicationAttractionsInput {
-  connect: AttractionWhereUniqueInput!
-}
-
-input HotelAttractionCreateInput {
-  hotel: HotelAttractionCreateNestedManyWithoutHotelInput!
-  attraction: HotelAttractionCreateNestedManyWithoutAttractionInput!
-}
-
-input HotelAttractionCreateNestedManyWithoutHotelInput {
-  connect: HotelWhereUniqueInput!
-}
-
-input HotelAttractionCreateNestedManyWithoutAttractionInput {
   connect: AttractionWhereUniqueInput!
 }
