@@ -1,4 +1,4 @@
-import { HotelAttractionSelect } from 'src/api/hotelAttraction/model'
+import { AttractionSelect } from 'src/api/attraction/model'
 
 import { PassengersSelect } from 'src/api/passengers/model'
 
@@ -9,7 +9,7 @@ interface HotelPrismaSelect {
   description?: boolean
   images?: boolean
   roomTypes?: boolean
-  hotelAttractions?: HotelAttractionSelect
+  attraction?: AttractionSelect
   passengers?: PassengersSelect
   createdAt?: boolean
   updatedAt?: boolean

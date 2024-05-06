@@ -105,7 +105,7 @@ model Attraction {
   updatedAt              DateTime                @updatedAt
   destination            Destination             @relation(fields: [destinationId], references: [id])
   applicationAttractions ApplicationAttraction[]
-  hotelAttractions       HotelAttraction[]
+  hotels                 Hotel[]
 
   @@map("attraction")
 }
@@ -113,26 +113,17 @@ model Attraction {
 model Hotel {
   id                Int                @id @default(autoincrement())
   uuid              String             @unique @default(uuid())
+  attractionId      Int                @map("attraction_id")
   name              String
   description       String
   images            String[]
-  roomTypes         String[]
+  roomTypes         String[]           @default([])
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
-  hotelAttractions  HotelAttraction[]
+  attraction        Attraction         @relation(fields: [attractionId], references: [id])
   passengers        Passengers[]
 
   @@map("hotel")
-}
-
-model HotelAttraction {
-  hotelId        Int          @map("hotel_id")
-  attractionId   Int          @map("attraction_id")
-  hotel          Hotel        @relation(fields: [hotelId], references: [id])
-  attraction     Attraction   @relation(fields: [attractionId], references: [id])
-
-  @@unique([hotelId, attractionId])
-  @@map("hotel_attraction")
 }
 
 model Passengers {

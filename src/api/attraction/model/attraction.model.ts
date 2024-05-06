@@ -1,8 +1,10 @@
-import { Field, Float, Int, ObjectType } from '@nestjs/graphql'
+import { Field, Int, ObjectType } from '@nestjs/graphql'
 
 import { ApplicationAttraction } from 'src/api/applicationAttraction/model'
 
 import { Destination } from 'src/api/destination/model'
+
+import { Hotel } from 'src/api/hotel/model'
 
 @ObjectType()
 export class Attraction {
@@ -29,6 +31,9 @@ export class Attraction {
 
   @Field(() => [ApplicationAttraction], { nullable: true })
   applicationAttractions?: ApplicationAttraction[]
+
+  @Field(() => [Hotel], { nullable: true })
+  hotels?: Hotel[]
 
   @Field(() => Date, { nullable: true })
   createdAt?: Date

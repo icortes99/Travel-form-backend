@@ -30,7 +30,7 @@ export class AttractionCreateNestedOneWithoutApplicationAttractionsInput {
 }
 
 @InputType()
-export class HotelAttractionCreateNestedManyWithoutAttractionInput {
+export class AttractionCreateNestedOneWithoutHotelsInput {
   @Field(() => AttractionWhereUniqueInput)
-  connect: AttractionWhereUniqueInput
+  connect?: AttractionWhereUniqueInput
 }
