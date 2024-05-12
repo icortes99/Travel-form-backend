@@ -4,15 +4,10 @@ import { Max, Min } from 'class-validator'
 
 import { PersonCreateNestedOneWithoutPassengersInput } from 'src/api/person/dto'
 
-import { HotelCreateNestedOneWithoutPassengersInput } from 'src/api/hotel/dto'
-
 @InputType()
 export class PassengersCreateWithoutApplicationInput {
   @Field(() => PersonCreateNestedOneWithoutPassengersInput)
   person: PersonCreateNestedOneWithoutPassengersInput
-
-  @Field(() => HotelCreateNestedOneWithoutPassengersInput)
-  hotel: HotelCreateNestedOneWithoutPassengersInput
 
   @Min(1)
   @Max(100)

@@ -21,17 +21,6 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type ApplicationAttraction {
-  id: Float
-  uuid: String
-  applicationId: Float
-  attractionId: Float
-  startDate: DateTime
-  endDate: DateTime
-  application: Application
-  attraction: Attraction
-}
-
 type Hotel {
   id: Int
   uuid: String
@@ -42,6 +31,18 @@ type Hotel {
   createdAt: DateTime
   updatedAt: DateTime
   attraction: Attraction
+}
+
+type ApplicationAttraction {
+  id: Float
+  uuid: String
+  applicationId: Float
+  attractionId: Float
+  startDate: DateTime
+  endDate: DateTime
+  application: Application
+  attraction: Attraction
+  hotel: Hotel
 }
 
 type Attraction {
@@ -83,11 +84,9 @@ type Person {
 }
 
 type Passengers {
-  hotelId: Float!
   personId: Float!
   applicationId: Float!
   roomAssigned: Float!
-  hotel: Hotel!
   person: Person!
   application: Application!
 }
@@ -305,7 +304,6 @@ input PassengersCreateNestedManyWithoutApplicationInput {
 
 input PassengersCreateWithoutApplicationInput {
   person: PersonCreateNestedOneWithoutPassengersInput!
-  hotel: HotelCreateNestedOneWithoutPassengersInput!
   roomAssigned: Float!
 }
 
@@ -319,10 +317,6 @@ input PersonCreateWithoutPassengersInput {
   age: Int!
 }
 
-input HotelCreateNestedOneWithoutPassengersInput {
-  connect: HotelWhereUniqueInput!
-}
-
 input ApplicationAttractionCreateNestedManyWithoutApplicationInput {
   create: [ApplicationAttractionCreateWithoutApplicationInput!]!
 }
@@ -331,8 +325,13 @@ input ApplicationAttractionCreateWithoutApplicationInput {
   startDate: DateTime!
   endDate: DateTime!
   attraction: AttractionCreateNestedOneWithoutApplicationAttractionsInput!
+  hotel: HotelCreateNestedOneWithoutApplicationAttractionsInput!
 }
 
 input AttractionCreateNestedOneWithoutApplicationAttractionsInput {
   connect: AttractionWhereUniqueInput!
+}
+
+input HotelCreateNestedOneWithoutApplicationAttractionsInput {
+  connect: HotelWhereUniqueInput!
 }

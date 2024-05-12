@@ -4,6 +4,8 @@ import { Application } from 'src/api/application/model'
 
 import { Attraction } from 'src/api/attraction/model'
 
+import { Hotel } from 'src/api/hotel/model'
+
 @ObjectType()
 export class ApplicationAttraction {
   @Field(() => Number, { nullable: true })
@@ -29,4 +31,7 @@ export class ApplicationAttraction {
 
   @Field(() => Attraction, { nullable: true })
   attraction?: Attraction
+
+  @Field(() => Hotel, { nullable: true })
+  hotel?: Hotel
 }

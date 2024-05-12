@@ -2,6 +2,8 @@ import { ApplicationSelect } from 'src/api/application/model'
 
 import { AttractionSelect } from 'src/api/attraction/model'
 
+import { HotelSelect } from 'src/api/hotel/model'
+
 interface ApplicationAttractionPrismaSelect {
   id?: boolean
   uuid?: boolean
@@ -9,6 +11,7 @@ interface ApplicationAttractionPrismaSelect {
   endDate?: boolean
   application?: ApplicationSelect
   attraction?: AttractionSelect
+  hotel?: HotelSelect
 }
 
 export interface ApplicationAttractionSelect {

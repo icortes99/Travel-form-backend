@@ -28,7 +28,7 @@ export class HotelCreateInput {
 }
 
 @InputType()
-export class HotelCreateNestedOneWithoutPassengersInput {
+export class HotelCreateNestedOneWithoutApplicationAttractionsInput {
   @Field(() => HotelWhereUniqueInput)
   connect: HotelWhereUniqueInput
 }
