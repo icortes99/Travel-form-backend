@@ -6,7 +6,7 @@ import { UserArgs, UserCreateInput } from './dto'
 
 import { PrismaService } from 'src/shared/datasource/prisma/prisma.service'
 
-import validateAge from 'src/shared/util/refuse-by/date'
+import { Constants } from 'src/shared/constants'
 
 @Injectable()
 export class UserService {
@@ -34,8 +34,8 @@ export class UserService {
     { select }: UserSelect,
   ): Promise<User> {
     if (data.person) {
-      if (!validateAge(data.person.create.birthdate, 0)) {
-        throw new BadRequestException('Date not supported')
+      if ((data.person.create.age).valueOf() < Constants.MINIMUM_AGE) {
+        throw new BadRequestException(`Age must be greather than ${Constants.MINIMUM_AGE}`)
       }
     }
     return this.prismaService.user.create({

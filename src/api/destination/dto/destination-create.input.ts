@@ -33,9 +33,3 @@ export class DestinationCreateNestedOneWithoutApplicationsInput {
   @Field(() => DestinationWhereUniqueInput)
   connect: DestinationWhereUniqueInput
 }
-
-@InputType()
-export class HotelDestinationCreateNestedManyWithoutDestinationInput {
-  @Field(() => DestinationWhereUniqueInput)
-  connect: DestinationWhereUniqueInput
-}

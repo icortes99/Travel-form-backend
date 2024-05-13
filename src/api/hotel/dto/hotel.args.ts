@@ -1,9 +1,9 @@
 import { ArgsType, Field } from '@nestjs/graphql'
 
-import { AttractionWhereUniqueInput } from 'src/api/attraction/dto'
+import { HotelWhereUniqueInput } from './hotel-where-unique.input'
 
 @ArgsType()
 export class HotelArgs {
-  @Field(() => AttractionWhereUniqueInput)
-  where: AttractionWhereUniqueInput
+  @Field(() => HotelWhereUniqueInput)
+  where: HotelWhereUniqueInput
 }

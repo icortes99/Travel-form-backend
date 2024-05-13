@@ -2,8 +2,6 @@ import { Field, Int, ObjectType } from '@nestjs/graphql'
 
 import { Application } from 'src/api/application/model'
 
-import { HotelDestination } from 'src/api/hotelDestination/model'
-
 import { User } from 'src/api/user/model'
 
 @ObjectType()
@@ -40,7 +38,4 @@ export class TravelAgency {
 
   @Field(() => Date, { nullable: true })
   updatedAt?: Date
-
-  @Field(() => [HotelDestination], { nullable: true })
-  hotelDestinations?: HotelDestination[]
 }

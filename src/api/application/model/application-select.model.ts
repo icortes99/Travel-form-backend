@@ -1,12 +1,12 @@
-import { ApplicationAttractionSelect } from "src/api/applicationAttraction/model"
+import { ApplicationAttractionSelect } from 'src/api/applicationAttraction/model'
 
-import { DestinationSelect } from "src/api/destination/model"
+import { DestinationSelect } from 'src/api/destination/model'
 
-import { PassengersSelect } from "src/api/passengers/model"
+import { PassengersSelect } from 'src/api/passengers/model'
 
-import { TravelAgencySelect } from "src/api/travelAgency/model"
+import { TravelAgencySelect } from 'src/api/travelAgency/model'
 
-import { UserSelect } from "src/api/user/model"
+import { UserSelect } from 'src/api/user/model'
 
 interface ApplicationPrismaSelect {
   id?: boolean

@@ -6,8 +6,6 @@ import { ApplicationArgs, ApplicationCreateInput } from './dto'
 
 import { PrismaService } from 'src/shared/datasource/prisma/prisma.service'
 
-import validateAge, { getAge } from 'src/shared/util/refuse-by/date'
-
 import { UserService } from '../user/user.service'
 
 import { NotionService, NotionData } from 'src/shared/modules/crm'
@@ -50,8 +48,34 @@ export class ApplicationService {
       }
     }
 
-    const existingUserConnect = ((data.user?.connect !== undefined) && await this.userService.findOne({ where: { email: data.user?.connect?.email } }, { select: { id: true } })) ?? null
-    const existingUserCreate = ((data.user?.create !== undefined) && await this.userService.findOne({ where: { email: data.user?.create?.email } }, { select: { id: true } })) ?? null
+    const existingUserConnect = ((data.user?.connect !== undefined) && await this.userService.findOne({
+      where: {
+        email: data.user?.connect?.email
+      }
+    }, {
+      select: {
+        id: true,
+        email: true,
+        person: {
+          select: {
+            firstName: true,
+            lastName: true,
+            age: true
+          }
+        },
+        phoneNumber: true
+      }
+    })) ?? null
+
+    const existingUserCreate = ((data.user?.create !== undefined) && await this.userService.findOne({
+      where: {
+        email: data.user?.create?.email
+      }
+    }, {
+      select: {
+        id: true
+      }
+    })) ?? null
 
     if ((data.user?.create !== undefined) && existingUserCreate) {
       throw new ConflictException('The user already exist.')
@@ -125,29 +149,13 @@ export class ApplicationService {
       let age: number = 0
 
       if (existingUserConnect) {
-        const fetchUser = await this.prismaService.user.findUnique({
-          where: {
-            email: data.user.connect.email
-          },
-          select: {
-            email: true,
-            person: {
-              select: {
-                firstName: true,
-                lastName: true,
-                birthdate: true
-              }
-            },
-            phoneNumber: true
-          }
-        })
-        user = `${fetchUser?.person?.firstName} ${fetchUser?.person?.lastName}`
-        age = getAge(fetchUser?.person?.birthdate)
-        email = `${fetchUser?.email}`
-        phone = `${fetchUser?.phoneNumber}`
+        user = `${existingUserConnect?.person?.firstName} ${existingUserConnect?.person?.lastName}`
+        age = existingUserConnect?.person?.age
+        email = `${existingUserConnect?.email}`
+        phone = `${existingUserConnect?.phoneNumber}`
       } else {
         user = `${data?.user?.create?.person?.create?.firstName} ${data?.user?.create?.person?.create?.lastName}`
-        age = getAge(data?.user?.create?.person?.create?.birthdate)
+        age = data?.user?.create?.person?.create?.age
         email = `${data?.user?.create?.email}`
         phone = `${data?.user?.create?.phoneNumber}`
       }
@@ -160,7 +168,7 @@ export class ApplicationService {
         email: email,
         age: age,
         phone: phone,
-        destiny: `${selectedAttractions[0]?.name}`,
+        destiny: `${selectedAttractions[0].destination?.name}`,
         attractions: selectedAttractions.map(attraction => attraction.name).join(', '),
         from: `${data?.startDate}`,
         to: `${data?.endDate}`,
@@ -171,11 +179,11 @@ export class ApplicationService {
         visa: data?.hasEntryPermission,
         passengers: data?.passengers?.create?.map(passenger => ({
           name: `${passenger.person.create.firstName} ${passenger.person.create.lastName}`,
-          age: getAge(passenger.person.create.birthdate)
+          age: passenger.person.create.age
         }))
       }
 
-      await this.mailService.sendEmail(this.formatEmail(data, selectedAttractions), 'cortes.ivan353@gmail.com')
+      await this.mailService.sendEmail(this.formatEmail(data, selectedAttractions), 'cortes.ivan353@gmail.com') // owner?.owner?.email
       await this.notionService.updateNotion(notionData)
     }
 
@@ -191,7 +199,7 @@ export class ApplicationService {
         <h3>Passenger ${i + 1}:</h3>
         <p><strong>First Name:</strong> ${passenger.person.create.firstName}</p>
         <p><strong>Last Name:</strong> ${passenger.person.create.lastName}</p>
-        <p><strong>Age:</strong> ${getAge(passenger.person.create.birthdate)}</p>
+        <p><strong>Age:</strong> ${passenger.person.create.age}</p>
       </li>`
     ))
 
@@ -212,7 +220,7 @@ export class ApplicationService {
       <p><strong>Last Name:</strong> ${data.user.create.person.create.lastName}</p>
       <p><strong>Email:</strong> ${data.user.create.email}</p>
       <p><strong>Phone Number:</strong> ${data.user.create.phoneNumber}</p>
-      <p><strong>Age:</strong> ${getAge(data.user.create.person.create.birthdate)}</p>
+      <p><strong>Age:</strong> ${data.user.create.person.create.age}</p>
     
       <h2>Passengers Information</h2>
       <ul>

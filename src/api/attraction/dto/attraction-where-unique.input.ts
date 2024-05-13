@@ -7,9 +7,4 @@ export class AttractionWhereUniqueInput {
 
   @Field(() => Int, { nullable: true })
   id?: number
-
-  /*@Field(() => Int, { nullable: true })
-  destinationId?: number*/
-  //destinationID is unique in a different table
-  //does this apply? I'd like to get all attractions by destiantion ID
 }

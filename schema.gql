@@ -2,102 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type ApplicationAttraction {
-  applicationId: Float!
-  attractionId: Float!
-  application: Application!
-  attraction: Attraction!
-}
-
-type Attraction {
-  id: Float
-  uuid: String
-  destinationId: Int
-  name: String
-  description: String
-  images: [String!]
-  travelDuration: Float
-  travelDistance: Float
-  destination: Destination
-  applicationAttractions: [ApplicationAttraction!]
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type Destination {
-  id: Float
-  uuid: String
-  name: String
-  description: String
-  images: [String!]
-  video: String
-  attractions: [Attraction!]
-  applications: [Application!]
-  createdAt: DateTime
-  updatedAt: DateTime
-  hotelDestinations: [HotelDestination!]
-}
-
-type Person {
-  id: Int
-  uuid: String
-  firstName: String
-  lastName: String
-  birthdate: DateTime
-  createdAt: DateTime
-  updatedAt: DateTime
-  passengers: [Passengers!]
-}
-
-type Passengers {
-  suiteId: Float!
-  personId: Float!
-  applicationId: Float!
-  suite: Suite!
-  person: Person!
-  application: Application!
-}
-
-type Suite {
-  id: Float
-  uuid: String
-  hotelId: Float
-  name: String
-  description: String
-  images: [String!]
-  feePerAdult: Float
-  feePerKid: Float
-  basedPrice: Float
-  hotel: Hotel
-  passengers: [Passengers!]
-}
-
-type Hotel {
-  id: Int
-  uuid: String
-  name: String
-  description: String
-  images: [String!]
-  suites: [Suite!]
-  createdAt: DateTime
-  updatedAt: DateTime
-  hotelDestinations: [HotelDestination!]
-}
-
-type HotelDestination {
-  hotelId: Int
-  destinationId: Int
-  travelAgencyId: Int
-  hotel: Hotel
-  destination: Destination
-  travelAgency: TravelAgency
-}
-
 type TravelAgency {
   id: Float
   uuid: String
@@ -110,7 +14,82 @@ type TravelAgency {
   applications: [Application!]
   createdAt: DateTime
   updatedAt: DateTime
-  hotelDestinations: [HotelDestination!]
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Hotel {
+  id: Int
+  uuid: String
+  name: String
+  description: String
+  images: [String!]
+  roomTypes: [String!]
+  createdAt: DateTime
+  updatedAt: DateTime
+  attraction: Attraction
+}
+
+type ApplicationAttraction {
+  id: Float
+  uuid: String
+  applicationId: Float
+  attractionId: Float
+  startDate: DateTime
+  endDate: DateTime
+  application: Application
+  attraction: Attraction
+  hotel: Hotel
+  selectedRoomType: String
+}
+
+type Attraction {
+  id: Float
+  uuid: String
+  destinationId: Int
+  name: String
+  description: String
+  images: [String!]
+  destination: Destination
+  applicationAttractions: [ApplicationAttraction!]
+  hotels: [Hotel!]
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type Destination {
+  id: Float
+  uuid: String
+  name: String
+  description: String
+  images: [String!]
+  video: String
+  attractions: [Attraction!]
+  applications: [Application!]
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type Person {
+  id: Int
+  uuid: String
+  firstName: String
+  lastName: String
+  age: Int
+  createdAt: DateTime
+  updatedAt: DateTime
+  passengers: [Passengers!]
+}
+
+type Passengers {
+  personId: Float!
+  applicationId: Float!
+  roomAssigned: Float!
+  person: Person!
+  application: Application!
 }
 
 type Application {
@@ -186,13 +165,10 @@ type User {
 type Query {
   user(where: UserWhereUniqueInput!): User
   travelAgency(where: TravelAgencyWhereUniqueInput!): TravelAgency
-  hotel(where: AttractionWhereUniqueInput!): Hotel
+  hotel(where: HotelWhereUniqueInput!): Hotel
   destination(where: DestinationWhereUniqueInput!): Destination
   attraction(where: AttractionWhereUniqueInput!): Attraction
   application(where: ApplicationWhereUniqueInput!): Application
-  suite(where: SuiteWhereUniqueInput!): Suite
-  hotelDestination(where: HotelDesinationWhereUniqueInput!): HotelDestination
-  hotelsInDestinationAgency(where: HotelsInDesinationAgencyWhereUniqueInput!): [HotelDestination!]
 }
 
 input UserWhereUniqueInput {
@@ -206,7 +182,7 @@ input TravelAgencyWhereUniqueInput {
   slug: String
 }
 
-input AttractionWhereUniqueInput {
+input HotelWhereUniqueInput {
   uuid: String
   id: Int
 }
@@ -216,25 +192,14 @@ input DestinationWhereUniqueInput {
   id: Int
 }
 
-input ApplicationWhereUniqueInput {
+input AttractionWhereUniqueInput {
   uuid: String
   id: Int
 }
 
-input SuiteWhereUniqueInput {
+input ApplicationWhereUniqueInput {
   uuid: String
-  id: Float
-}
-
-input HotelDesinationWhereUniqueInput {
-  hotelId: Int!
-  destinationId: Int!
-  travelAgencyId: Int!
-}
-
-input HotelsInDesinationAgencyWhereUniqueInput {
-  destination: DestinationWhereUniqueInput!
-  travelAgency: TravelAgencyWhereUniqueInput!
+  id: Int
 }
 
 type Mutation {
@@ -244,8 +209,6 @@ type Mutation {
   createDestination(data: DestinationCreateInput!): Destination!
   createAttraction(data: AttractionCreateInput!): Attraction!
   createApplication(data: ApplicationCreateInput!): Application!
-  createSuite(data: SuiteCreateInput!): Suite!
-  createHotelDestination(data: HotelDestinationCreateInput!): HotelDestination!
 }
 
 input UserCreateInput {
@@ -263,7 +226,7 @@ input PersonCreateNestedOneWithoutUserInput {
 input PersonCreateWithoutUserInput {
   firstName: String!
   lastName: String!
-  birthdate: DateTime!
+  age: Int!
 }
 
 input TravelAgencyCreateInput {
@@ -282,6 +245,12 @@ input HotelCreateInput {
   name: String!
   description: String!
   images: [String!]!
+  roomTypes: [String!]!
+  attraction: AttractionCreateNestedOneWithoutHotelsInput!
+}
+
+input AttractionCreateNestedOneWithoutHotelsInput {
+  connect: AttractionWhereUniqueInput!
 }
 
 input DestinationCreateInput {
@@ -295,8 +264,6 @@ input AttractionCreateInput {
   name: String!
   description: String!
   images: [String!]!
-  travelDuration: Float!
-  travelDistance: Float!
   destination: DestinationCreateNestedOneWithoutAttractionsInput!
 }
 
@@ -337,12 +304,8 @@ input PassengersCreateNestedManyWithoutApplicationInput {
 }
 
 input PassengersCreateWithoutApplicationInput {
-  suite: SuiteCreateNestedOneWithoutPassengersInput!
   person: PersonCreateNestedOneWithoutPassengersInput!
-}
-
-input SuiteCreateNestedOneWithoutPassengersInput {
-  connect: SuiteWhereUniqueInput!
+  roomAssigned: Float!
 }
 
 input PersonCreateNestedOneWithoutPassengersInput {
@@ -352,7 +315,7 @@ input PersonCreateNestedOneWithoutPassengersInput {
 input PersonCreateWithoutPassengersInput {
   firstName: String!
   lastName: String!
-  birthdate: DateTime!
+  age: Int!
 }
 
 input ApplicationAttractionCreateNestedManyWithoutApplicationInput {
@@ -360,46 +323,17 @@ input ApplicationAttractionCreateNestedManyWithoutApplicationInput {
 }
 
 input ApplicationAttractionCreateWithoutApplicationInput {
+  startDate: DateTime!
+  endDate: DateTime!
   attraction: AttractionCreateNestedOneWithoutApplicationAttractionsInput!
+  hotel: HotelCreateNestedOneWithoutApplicationAttractionsInput
+  selectedRoomType: String
 }
 
 input AttractionCreateNestedOneWithoutApplicationAttractionsInput {
   connect: AttractionWhereUniqueInput!
 }
 
-input SuiteCreateInput {
-  name: String!
-  description: String!
-  images: [String!]!
-  feePerAdult: Float!
-  feePerKid: Float!
-  basedPrice: Float!
-  hotel: HotelCreateNestedOneWithoutSuitesInput!
-}
-
-input HotelCreateNestedOneWithoutSuitesInput {
+input HotelCreateNestedOneWithoutApplicationAttractionsInput {
   connect: HotelWhereUniqueInput!
-}
-
-input HotelWhereUniqueInput {
-  uuid: String
-  id: Int
-}
-
-input HotelDestinationCreateInput {
-  hotel: HotelDestinationCreateNestedManyWithoutHotelInput!
-  destination: HotelDestinationCreateNestedManyWithoutDestinationInput!
-  travelAgency: TravelAgencyCreateNestedOneWithoutDestinationsInput!
-}
-
-input HotelDestinationCreateNestedManyWithoutHotelInput {
-  connect: HotelWhereUniqueInput!
-}
-
-input HotelDestinationCreateNestedManyWithoutDestinationInput {
-  connect: DestinationWhereUniqueInput!
-}
-
-input TravelAgencyCreateNestedOneWithoutDestinationsInput {
-  connect: TravelAgencyWhereUniqueInput!
 }

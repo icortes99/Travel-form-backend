@@ -1,12 +1,14 @@
+import { PassengersSelect } from 'src/api/passengers/model'
+
 interface PersonPrismaSelect {
     id?: boolean
     uuid?: boolean
     firstName?: boolean
     lastName?: boolean
-    birthdate?: boolean
+    age?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    passengers?: boolean
+    passengers?: PassengersSelect
 }
 
 export interface PersonSelect {

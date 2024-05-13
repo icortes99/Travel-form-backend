@@ -12,7 +12,7 @@ model Person {
   uuid       String       @unique @default(uuid())
   firstName  String       @map("first_name")
   lastName   String       @map("last_name")
-  birthdate  DateTime
+  age        Int
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   user       User?
@@ -46,11 +46,11 @@ model TravelAgency {
   name              String
   website           String
   logo              String
+  notionDB          String?            @map("notion_db")
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   applications      Application[]
   owner             User               @relation(fields: [ownerId], references: [id])
-  hotelDestinations HotelDestination[]
 
   @@map("travel_agency")
 }
@@ -90,7 +90,6 @@ model Destination {
   updatedAt         DateTime           @updatedAt
   attractions       Attraction[]
   applications      Application[]
-  hotelDestinations HotelDestination[]
 
   @@map("destination")
 }
@@ -102,77 +101,55 @@ model Attraction {
   name                   String
   description            String
   images                 String[]
-  travelDuration         Float                   @map("travel_duration")
-  travelDistance         Float                   @map("travel_distance")
   createdAt              DateTime                @default(now())
   updatedAt              DateTime                @updatedAt
   destination            Destination             @relation(fields: [destinationId], references: [id])
   applicationAttractions ApplicationAttraction[]
+  hotels                 Hotel[]
 
   @@map("attraction")
 }
 
 model Hotel {
-  id                Int                @id @default(autoincrement())
-  uuid              String             @unique @default(uuid())
-  name              String
-  description       String
-  images            String[]
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
-  suites            Suite[]
-  hotelDestinations HotelDestination[]
+  id                     Int                      @id @default(autoincrement())
+  uuid                   String                   @unique @default(uuid())
+  attractionId           Int                      @map("attraction_id")
+  name                   String
+  description            String
+  images                 String[]
+  roomTypes              String[]                 @default([]) @map("room_types")
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+  attraction             Attraction               @relation(fields: [attractionId], references: [id])
+  applicationAttractions ApplicationAttraction[]
 
   @@map("hotel")
 }
 
-model HotelDestination {
-  hotelId        Int          @map("hotel_id")
-  destinationId  Int          @map("destination_id")
-  travelAgencyId Int          @map("travel_agency_id")
-  hotel          Hotel        @relation(fields: [hotelId], references: [id])
-  destination    Destination  @relation(fields: [destinationId], references: [id])
-  travelAgency   TravelAgency @relation(fields: [travelAgencyId], references: [id])
-
-  @@unique([hotelId, destinationId, travelAgencyId])
-  @@map("hotel_destination")
-}
-
-model Suite {
-  id          Int          @id @default(autoincrement())
-  uuid        String       @unique @default(uuid())
-  hotelId     Int          @map("hotel_id")
-  name        String
-  description String
-  images      String[]
-  feePerAdult Float        @map("fee_per_adult")
-  feePerKid   Float        @map("fee_per_kid")
-  basedPrice  Float        @map("based_price")
-  hotel       Hotel        @relation(fields: [hotelId], references: [id])
-  passengers  Passengers[]
-
-  @@map("suite")
-}
-
 model Passengers {
-  suiteId       Int         @map("suite_id")
   personId      Int         @map("person_id")
   applicationId Int         @map("application_id")
-  suite         Suite       @relation(fields: [suiteId], references: [id])
+  roomAssigned  Int         @map("room_assigned")
   person        Person      @relation(fields: [personId], references: [id])
   application   Application @relation(fields: [applicationId], references: [id])
 
-  @@unique([suiteId, personId, applicationId])
+  @@unique([personId, applicationId])
   @@map("passengers")
 }
 
 model ApplicationAttraction {
-  applicationId Int         @map("application_id")
-  attractionId  Int         @map("attraction_id")
-  application   Application @relation(fields: [applicationId], references: [id])
-  attraction    Attraction  @relation(fields: [attractionId], references: [id])
+  id                Int         @id @default(autoincrement())
+  uuid              String      @unique @default(uuid())
+  applicationId     Int         @map("application_id")
+  attractionId      Int         @map("attraction_id")
+  hotelId           Int?        @map("hotel_id")
+  selectedRoomType  String?     @map("selected_room_type")
+  startDate         DateTime    @map("start_date")
+  endDate           DateTime    @map("end_date")
+  application       Application @relation(fields: [applicationId], references: [id])
+  attraction        Attraction  @relation(fields: [attractionId], references: [id])
+  hotel             Hotel?      @relation(fields: [hotelId], references: [id])
 
-  @@unique([applicationId, attractionId])
   @@map("application_attraction")
 }
 

@@ -4,6 +4,8 @@ import { MaxLength, MinLength } from 'class-validator'
 
 import { HotelWhereUniqueInput } from './hotel-where-unique.input'
 
+import { AttractionCreateNestedOneWithoutHotelsInput } from 'src/api/attraction/dto'
+
 @InputType()
 export class HotelCreateInput {
   @MaxLength(35)
@@ -17,22 +19,16 @@ export class HotelCreateInput {
 
   @Field(() => [String])
   images: string[]
+
+  @Field(() => [String])
+  roomTypes: string[]
+
+  @Field(() => AttractionCreateNestedOneWithoutHotelsInput)
+  attraction: AttractionCreateNestedOneWithoutHotelsInput
 }
 
 @InputType()
-export class HotelDestinationCreateNestedManyWithoutHotelInput {
-  @Field(() => HotelWhereUniqueInput)
-  connect: HotelWhereUniqueInput
-}
-
-@InputType()
-export class SuiteUncheckedCreateNestedManyWithoutHotelInput {
-  @Field(() => HotelWhereUniqueInput)
-  connect: HotelWhereUniqueInput
-}
-
-@InputType()
-export class HotelCreateNestedOneWithoutSuitesInput {
+export class HotelCreateNestedOneWithoutApplicationAttractionsInput {
   @Field(() => HotelWhereUniqueInput)
   connect: HotelWhereUniqueInput
 }

@@ -1,11 +1,10 @@
-import { Field, InputType } from '@nestjs/graphql'
+import { Field, InputType, Int } from '@nestjs/graphql'
 
-import { IsDateString, MaxLength, MinLength } from 'class-validator'
-
+import { IsNumber, MaxLength, MinLength } from 'class-validator'
 
 @InputType()
 export class PersonCreateWithoutUserInput {
-  @MinLength(3)
+  @MinLength(2)
   @MaxLength(60)
   @Field(() => String)
   firstName: string
@@ -15,9 +14,9 @@ export class PersonCreateWithoutUserInput {
   @Field(() => String)
   lastName: string
 
-  @IsDateString()
-  @Field(() => Date)
-  birthdate: Date
+  @IsNumber()
+  @Field(() => Int)
+  age: number
 }
 
 @InputType()
@@ -32,9 +31,9 @@ export class PersonCreateWithoutPassengersInput {
   @Field(() => String)
   lastName: string
 
-  @IsDateString()
-  @Field(() => Date)
-  birthdate: Date
+  @IsNumber()
+  @Field(() => Int)
+  age: number
 }
 
 @InputType()

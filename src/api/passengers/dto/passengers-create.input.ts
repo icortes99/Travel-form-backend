@@ -1,16 +1,18 @@
 import { Field, InputType } from '@nestjs/graphql'
 
-import { PersonCreateNestedOneWithoutPassengersInput } from 'src/api/person/dto'
+import { Max, Min } from 'class-validator'
 
-import { SuiteCreateNestedOneWithoutPassengersInput } from 'src/api/suite/dto'
+import { PersonCreateNestedOneWithoutPassengersInput } from 'src/api/person/dto'
 
 @InputType()
 export class PassengersCreateWithoutApplicationInput {
-  @Field(() => SuiteCreateNestedOneWithoutPassengersInput)
-  suite: SuiteCreateNestedOneWithoutPassengersInput
-
   @Field(() => PersonCreateNestedOneWithoutPassengersInput)
   person: PersonCreateNestedOneWithoutPassengersInput
+
+  @Min(1)
+  @Max(100)
+  @Field(() => Number)
+  roomAssigned: number
 }
 
 @InputType()

@@ -10,10 +10,6 @@ export class MailService {
 
   private initializeSendGrid() {
     const apiKey = process.env.SENDGRID_KEY
-    console.log('*****************************************************')
-    console.log('Env key: ', apiKey)
-    console.log('SGmail: ', SGMail)
-    console.log('*****************************************************')
     SGMail.setApiKey(apiKey)
   }
 

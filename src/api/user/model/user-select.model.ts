@@ -1,3 +1,5 @@
+import { PersonSelect } from 'src/api/person/model'
+
 interface UserPrismaSelect {
   id?: boolean;
   uuid?: boolean;
@@ -5,7 +7,7 @@ interface UserPrismaSelect {
   personId?: boolean;
   photo?: boolean;
   phoneNumber?: boolean;
-  person?: boolean;
+  person?: PersonSelect;
   createdAt?: boolean;
   updatedAt?: boolean;
 }
