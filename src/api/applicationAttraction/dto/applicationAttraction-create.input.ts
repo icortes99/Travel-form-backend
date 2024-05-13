@@ -15,10 +15,10 @@ export class ApplicationAttractionCreateWithoutApplicationInput {
   @Field(() => AttractionCreateNestedOneWithoutApplicationAttractionsInput)
   attraction: AttractionCreateNestedOneWithoutApplicationAttractionsInput
 
-  @Field(() => HotelCreateNestedOneWithoutApplicationAttractionsInput)
+  @Field(() => HotelCreateNestedOneWithoutApplicationAttractionsInput, { nullable: true })
   hotel?: HotelCreateNestedOneWithoutApplicationAttractionsInput
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   selectedRoomType?: string
 }
 

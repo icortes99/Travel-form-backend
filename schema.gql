@@ -326,8 +326,8 @@ input ApplicationAttractionCreateWithoutApplicationInput {
   startDate: DateTime!
   endDate: DateTime!
   attraction: AttractionCreateNestedOneWithoutApplicationAttractionsInput!
-  hotel: HotelCreateNestedOneWithoutApplicationAttractionsInput!
-  selectedRoomType: String!
+  hotel: HotelCreateNestedOneWithoutApplicationAttractionsInput
+  selectedRoomType: String
 }
 
 input AttractionCreateNestedOneWithoutApplicationAttractionsInput {
