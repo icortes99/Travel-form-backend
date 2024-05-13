@@ -34,4 +34,7 @@ export class ApplicationAttraction {
 
   @Field(() => Hotel, { nullable: true })
   hotel?: Hotel
+
+  @Field(() => String, { nullable: true })
+  selectedRoomType?: string
 }

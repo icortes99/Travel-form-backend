@@ -117,7 +117,7 @@ model Hotel {
   name                   String
   description            String
   images                 String[]
-  roomTypes              String[]                 @default([])
+  roomTypes              String[]                 @default([]) @map("room_types")
   createdAt              DateTime                 @default(now())
   updatedAt              DateTime                 @updatedAt
   attraction             Attraction               @relation(fields: [attractionId], references: [id])
@@ -138,16 +138,17 @@ model Passengers {
 }
 
 model ApplicationAttraction {
-  id            Int         @id @default(autoincrement())
-  uuid          String      @unique @default(uuid())
-  applicationId Int         @map("application_id")
-  attractionId  Int         @map("attraction_id")
-  hotelId       Int         @map("hotel_id")
-  startDate     DateTime    @map("start_date")
-  endDate       DateTime    @map("end_date")
-  application   Application @relation(fields: [applicationId], references: [id])
-  attraction    Attraction  @relation(fields: [attractionId], references: [id])
-  hotel         Hotel       @relation(fields: [hotelId], references: [id])
+  id                Int         @id @default(autoincrement())
+  uuid              String      @unique @default(uuid())
+  applicationId     Int         @map("application_id")
+  attractionId      Int         @map("attraction_id")
+  hotelId           Int?        @map("hotel_id")
+  selectedRoomType  String?     @map("selected_room_type")
+  startDate         DateTime    @map("start_date")
+  endDate           DateTime    @map("end_date")
+  application       Application @relation(fields: [applicationId], references: [id])
+  attraction        Attraction  @relation(fields: [attractionId], references: [id])
+  hotel             Hotel?      @relation(fields: [hotelId], references: [id])
 
   @@map("application_attraction")
 }

@@ -43,6 +43,7 @@ type ApplicationAttraction {
   application: Application
   attraction: Attraction
   hotel: Hotel
+  selectedRoomType: String
 }
 
 type Attraction {
@@ -326,6 +327,7 @@ input ApplicationAttractionCreateWithoutApplicationInput {
   endDate: DateTime!
   attraction: AttractionCreateNestedOneWithoutApplicationAttractionsInput!
   hotel: HotelCreateNestedOneWithoutApplicationAttractionsInput!
+  selectedRoomType: String!
 }
 
 input AttractionCreateNestedOneWithoutApplicationAttractionsInput {

@@ -12,6 +12,7 @@ interface ApplicationAttractionPrismaSelect {
   application?: ApplicationSelect
   attraction?: AttractionSelect
   hotel?: HotelSelect
+  selectedRoomType?: boolean
 }
 
 export interface ApplicationAttractionSelect {
