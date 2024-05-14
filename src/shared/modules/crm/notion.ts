@@ -11,7 +11,7 @@ export interface NotionData {
   age: number
   phone?: number | string
   destiny: string
-  attractions: string
+  attractions: { name: string, from: Date | string, to: Date | string, hotel: string, roomType: string }[]
   from: Date | string
   to: Date | string
   country: string
@@ -19,7 +19,7 @@ export interface NotionData {
   contactPreference: ContactPreference
   tripObjective: TripObjective
   visa: boolean
-  passengers: { name: string, age: number }[]
+  passengers: { name: string, age: number, roomAssigned: number }[]
 }
 
 @Injectable()
@@ -45,7 +45,7 @@ export class NotionService {
       'Content-Type': 'application/json'
     }
 
-    const passengers = data.passengers.map(passenger => ({
+    const passengersHTML = data.passengers.map(passenger => ({
       "object": "block",
       "type": "bulleted_list_item",
       "bulleted_list_item": {
@@ -53,7 +53,22 @@ export class NotionService {
           {
             "type": "text",
             "text": {
-              "content": `Name: ${passenger.name}. Age: ${passenger.age}`
+              "content": `Name: ${passenger.name}\nAge: ${passenger.age}\nRoom assigned: ${passenger.roomAssigned}`
+            }
+          }
+        ]
+      }
+    }))
+
+    const attractionsHTML = data.attractions.map(attraction => ({
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": `Attraction: ${attraction.name}\nFrom: ${attraction.from}\nTo: ${attraction.to}\nHotel: ${attraction.hotel}\nType of room: ${attraction.roomType}`
             }
           }
         ]
@@ -63,7 +78,7 @@ export class NotionService {
     const body = {
       "parent": { "database_id": data.databaseId },
       "icon": {
-        "emoji": "🧲"
+        "emoji": "👤"
       },
       "properties": {
         "User": {
@@ -88,7 +103,7 @@ export class NotionService {
             }
           ]
         },
-        "Passengers": { "number": data.passengers.length },
+        "Passengers": { "number": (data.passengers.length + 1) },
         "Destiny": {
           "rich_text": [
             {
@@ -102,7 +117,7 @@ export class NotionService {
           "rich_text": [
             {
               "text": {
-                "content": data.attractions ?? 'No data'
+                "content": data.attractions.map(attraction => attraction.name).join(', ') ?? 'No data'
               }
             }
           ]
@@ -168,10 +183,18 @@ export class NotionService {
           "object": "block",
           "type": "heading_2",
           "heading_2": {
-            "rich_text": [{ "type": "text", "text": { "content": "Passengers" } }]
+            "rich_text": [{ "type": "text", "text": { "content": "Companions" } }]
           }
         },
-        ...passengers
+        ...passengersHTML,
+        {
+          "object": "block",
+          "type": "heading_2",
+          "heading_2": {
+            "rich_text": [{ "type": "text", "text": { "content": "Attractions" } }]
+          }
+        },
+        ...attractionsHTML
       ]
     }
 

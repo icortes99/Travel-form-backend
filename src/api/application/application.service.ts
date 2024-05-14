@@ -112,7 +112,7 @@ export class ApplicationService {
             name: true
           }
         },
-        name: true
+        name: true,
       }
     })
 
@@ -139,7 +139,8 @@ export class ApplicationService {
             select: {
               email: true
             }
-          }
+          },
+          notionDB: true
         }
       })
 
@@ -160,16 +161,27 @@ export class ApplicationService {
         phone = `${data?.user?.create?.phoneNumber}`
       }
 
+      //selectedAttractions.map(attraction => attraction.name).join(', ')
+      const notionAttractions: { name: string, from: Date | string, to: Date | string, hotel: string, roomType: string }[] = selectedAttractions.map((attraction, i) => ({
+        name: attraction.name,
+        from: data.applicationAttractions.create[i].startDate,
+        to: data.applicationAttractions.create[i].endDate,
+        hotel: '',
+        roomType: data.applicationAttractions.create[i].selectedRoomType,
+      }))
+
+      console.log('owner: ', owner)
+
       const notionData: NotionData = {
         authToken: 'secret_jn226QSSBjyjdY7fAwBE86XuLsFfKl6xoauJXhS8678',
-        databaseId: '220f146bb2af4bf9a5d4954fea29dd56',
+        databaseId: owner.notionDB,
         url: 'https://api.notion.com/v1/pages',
         user: user,
         email: email,
         age: age,
         phone: phone,
         destiny: `${selectedAttractions[0].destination?.name}`,
-        attractions: selectedAttractions.map(attraction => attraction.name).join(', '),
+        attractions: notionAttractions,
         from: `${data?.startDate}`,
         to: `${data?.endDate}`,
         country: `${data?.userCurrentLocation}`,
@@ -178,12 +190,13 @@ export class ApplicationService {
         tripObjective: `${data?.tripObjective}`,
         visa: data?.hasEntryPermission,
         passengers: data?.passengers?.create?.map(passenger => ({
-          name: `${passenger.person.create.firstName} ${passenger.person.create.lastName}`,
-          age: passenger.person.create.age
+          name: `${passenger?.person?.create?.firstName} ${passenger?.person?.create?.lastName}`,
+          age: passenger?.person?.create?.age,
+          roomAssigned: passenger?.roomAssigned
         }))
       }
 
-      await this.mailService.sendEmail(this.formatEmail(data, selectedAttractions), 'cortes.ivan353@gmail.com') // owner?.owner?.email
+      //await this.mailService.sendEmail(this.formatEmail(data, selectedAttractions), 'cortes.ivan353@gmail.com') // owner?.owner?.email
       await this.notionService.updateNotion(notionData)
     }
 
