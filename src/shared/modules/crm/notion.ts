@@ -11,7 +11,7 @@ export interface NotionData {
   age: number
   phone?: number | string
   destiny: string
-  attractions: { name: string, from: Date | string, to: Date | string, hotel: string, roomType: string }[]
+  attractions: { name: string, from: Date | string, to: Date | string, hotel?: string, roomType?: string }[]
   from: Date | string
   to: Date | string
   country: string
@@ -68,7 +68,7 @@ export class NotionService {
           {
             "type": "text",
             "text": {
-              "content": `Attraction: ${attraction.name}\nFrom: ${attraction.from}\nTo: ${attraction.to}\nHotel: ${attraction.hotel}\nType of room: ${attraction.roomType}`
+              "content": `Attraction: ${attraction.name}\nFrom: ${attraction.from}\nTo: ${attraction.to}${attraction.hotel && `\nHotel: ${attraction.hotel}`}${attraction.roomType && `\nType of room: ${attraction.roomType}`}`
             }
           }
         ]

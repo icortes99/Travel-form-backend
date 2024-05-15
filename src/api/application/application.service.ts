@@ -161,16 +161,38 @@ export class ApplicationService {
         phone = `${data?.user?.create?.phoneNumber}`
       }
 
-      //selectedAttractions.map(attraction => attraction.name).join(', ')
+      const hotelAssistance: boolean = (data?.applicationAttractions?.create[0]?.hotel !== undefined ) && (data?.applicationAttractions?.create[0]?.hotel !== null)
+      let hotelsMap: { [uuid: string]: string }
+
+      if (hotelAssistance){
+        const hotelsIDs = data.applicationAttractions.create.map(appAtt => appAtt.hotel.connect.uuid)
+
+        const hotels = await this.prismaService.hotel.findMany({
+          where: {
+            uuid: {
+              in: hotelsIDs
+            }
+          }, select: {
+            uuid: true,
+            name: true
+          }
+        })
+
+        hotelsMap = hotels.reduce((acc, hotel) => {
+          acc[hotel.uuid] = hotel.name
+          return acc
+        }, {})
+      }
+
       const notionAttractions: { name: string, from: Date | string, to: Date | string, hotel: string, roomType: string }[] = selectedAttractions.map((attraction, i) => ({
         name: attraction.name,
         from: data.applicationAttractions.create[i].startDate,
         to: data.applicationAttractions.create[i].endDate,
-        hotel: '',
-        roomType: data.applicationAttractions.create[i].selectedRoomType,
+        ...hotelAssistance && ({
+          hotel: hotelsMap[data.applicationAttractions.create[i].hotel.connect.uuid],
+          roomType: data.applicationAttractions.create[i].selectedRoomType
+        })
       }))
-
-      console.log('owner: ', owner)
 
       const notionData: NotionData = {
         authToken: 'secret_jn226QSSBjyjdY7fAwBE86XuLsFfKl6xoauJXhS8678',
