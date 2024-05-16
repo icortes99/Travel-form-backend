@@ -16,6 +16,8 @@ import { AttractionModule } from './api/attraction/attraction.module'
 
 import { ApplicationModule } from './api/application/application.module'
 
+import { AppController } from './app.controller'
+
 @Module({
   imports: [
     PrismaModule,
@@ -27,7 +29,7 @@ import { ApplicationModule } from './api/application/application.module'
     AttractionModule,
     ApplicationModule
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule { }
