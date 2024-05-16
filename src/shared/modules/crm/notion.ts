@@ -68,7 +68,7 @@ export class NotionService {
           {
             "type": "text",
             "text": {
-              "content": `Attraction: ${attraction.name}\nFrom: ${attraction.from}\nTo: ${attraction.to}${attraction.hotel && `\nHotel: ${attraction.hotel}`}${attraction.roomType && `\nType of room: ${attraction.roomType}`}`
+              "content": `Attraction: ${attraction.name}\nFrom: ${this.formatDate(attraction.from)}\nTo: ${this.formatDate(attraction.to)}${attraction.hotel && `\nHotel: ${attraction.hotel}`}${attraction.roomType && `\nType of room: ${attraction.roomType}`}`
             }
           }
         ]
