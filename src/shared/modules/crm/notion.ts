@@ -204,7 +204,7 @@ export class NotionService {
       body: JSON.stringify(body)
     })
       .then(response => response.json())
-      .then(res => console.log(res.isOk ? `NOTION ANSWER: ${res}` : 'NOTION ERROR'))
+      .then(res => console.log(res.isOk ? `NOTION ANSWER: ${res}` : `NOTION ERROR: ${res}`))
       .catch(e => console.log('NOTION ERROR: ' + e))
   }
 }
