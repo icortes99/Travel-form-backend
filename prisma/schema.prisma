@@ -47,6 +47,7 @@ model TravelAgency {
   website           String
   logo              String
   notionDB          String?            @map("notion_db")
+  notionTokenDB     String?            @map("notion_token_db")
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   applications      Application[]
