@@ -6,6 +6,8 @@ import { DestinationCreateNestedOneWithoutAttractionsInput } from 'src/api/desti
 
 import { AttractionWhereUniqueInput } from './attraction-where-unique.input'
 
+import { TicketWhereUniqueInput } from 'src/api/ticket/dto'
+
 @InputType()
 export class AttractionCreateInput {
   @Field(() => String)
@@ -33,4 +35,10 @@ export class AttractionCreateNestedOneWithoutApplicationAttractionsInput {
 export class AttractionCreateNestedOneWithoutHotelsInput {
   @Field(() => AttractionWhereUniqueInput)
   connect?: AttractionWhereUniqueInput
+}
+
+@InputType()
+export class AttractionCreateNestedOneWithoutTicketsInput {
+  @Field(() => TicketWhereUniqueInput)
+  connect?: TicketWhereUniqueInput
 }

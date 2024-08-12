@@ -2,6 +2,10 @@ import { Field, InputType } from '@nestjs/graphql'
 
 import { Max, MaxLength, Min, MinLength } from 'class-validator'
 
+import { AttractionCreateNestedOneWithoutTicketsInput } from 'src/api/attraction/dto'
+
+import { TicketWhereUniqueInput } from './ticket-where-unique.input'
+
 @InputType()
 export class TicketCreateInput {
   @MinLength(1)
@@ -19,5 +23,12 @@ export class TicketCreateInput {
   @Field(() => Number)
   avgPrice: number
 
-  // Attraction
+  @Field(() => AttractionCreateNestedOneWithoutTicketsInput)
+  attraction: AttractionCreateNestedOneWithoutTicketsInput
+}
+
+@InputType()
+export class TicketCreateNestedManyWithoutAttractionInput {
+  @Field(() => TicketWhereUniqueInput)
+  connect: TicketWhereUniqueInput
 }
